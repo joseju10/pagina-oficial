@@ -2,20 +2,6 @@
 sort: 1
 ---
 
-# Introducción
+# Administración De Sistemas Operativos
 
-En este apartado descargaremos una versión de kernel desde la página https://kernel.org/ y haremos lo siguiente:
-
-- Instalar dependencias
-
-- Descargar Kernel
-
-- Compilar Kernel
-
-- Crear imagen .deb
-
-- Instalar archivo .deb creado anteriormente
-
-- Reducir módulos del Kernel
-
-La versión de Kernel que he elegido para este apartado es la versión 6.0.7.
+En esta página publicaré las diferentes prácticas y recursos del módulo de Administración de Sistemas Operativos.

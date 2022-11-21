@@ -18,6 +18,8 @@ En este apartado descargaremos una versión de kernel desde la página https://k
 
 La versión de Kernel que he elegido para este apartado es la versión 6.0.7.
 
+---
+
 ## Instalar Dependencias
 
 ---

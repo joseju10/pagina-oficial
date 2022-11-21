@@ -1,7 +1,3 @@
----
-sort: 1
----
-
 # COMPILACION DE UN KERNEL LINUX A MEDIDA
 
 ## Introducción

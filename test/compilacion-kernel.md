@@ -1,5 +1,3 @@
-# Procedimiento de Instalación
-
 ## Instalar Dependencias
 
 ---

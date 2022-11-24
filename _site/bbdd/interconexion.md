@@ -548,3 +548,341 @@ Finalmente comprobamos que funciona haciendo una consulta a la tabla dept desde 
     ```
 
 ## Interconexión entre un servidor Oracle y otro Postgres.
+
+En este punto inteconectararemos la base de datos creada en oracle1 con postgres2, para ello haremos lo siguiente:
+
+- Primero instalamos la paquetería necesaria para configurar los drivers:
+
+    ```shell
+    apt install unixodbc odbc-postgres
+    ```
+
+A continuación, debemos configurar unixodbc para conectar los drivers, haremos lo siguiente:
+
+- Nos fijamos en la siguiente línea dentro del fichero de configuración /etc/odbcinst.ini:
+
+    ```shell
+    [PostgreSQL Unicode]
+    ```
+
+- Aquí viene el nombre de los drivers de postgres, con lo que teniendo en cuenta esta información, añadimos la siguiente línea dentro del fichero /etc/odbc.ini:
+    
+    ```shell
+    [PSQLU]
+    Debug           = 0
+    CommLog         = 0
+    ReadOnly        = 0
+    Driver          = PostgreSQL
+    Servername      = 192.168.1.22
+    Username        = postgres2
+    Password        = postgres
+    Port            = 5432
+    Database        = postgres2
+    Trace           = 0
+    TraceFile       = /tmp/sql.log
+    ```
+
+- Comprobamos que hay conectividad:
+
+    ```shell
+    root@oracle:~# isql PSQLU
+    +---------------------------------------+
+    | Connected!                            |
+    |                                       |
+    | sql-statement                         |
+    | help [tablename]                      |
+    | quit                                  |
+    |                                       |
+    +---------------------------------------+
+    SQL> select * from dept;
+    +-------+---------------+--------------+
+    | deptno| dname         | loc          |
+    +-------+---------------+--------------+
+    | 50    | RECOUNTING    | MIAMI        |
+    | 60    | SEARCH        | FLORIDA      |
+    | 70    | SHELLS        | NEW JERSEY   |
+    | 80    | OPTIONS       | WASHINTON    |
+    +-------+---------------+--------------+
+    SQLRowCount returns 4
+    4 rows fetched
+    ```
+Ahora que hemos configurado el driver, procederemos a configurar oracle para que utilice el driver, para ello haremos lo siguiente:
+
+- Dentro del directorio /opt/oracle/product/19c/dbhome_1/hs/admin/ creamos el fichero initPSQLU.ora con el siguiente contenido:
+
+    ```shell
+    HS_FDS_CONNECT_INFO = PSQLU
+    HS_FDS_TRACE_LEVEL = DEBUG
+    HS_FDS_SHAREABLE_NAME = /usr/lib64/psqlodbcw.so
+    HS_LANGUAGE = AMERICAN_AMERICA.WE8ISO8859P1
+    set ODBCINI=/etc/odbc.ini
+    ```
+
+- Seguidamente, modificamos el fichero de configuración /opt/oracle/product/19c/dbhome_1/network/admin/listener.ora con el siguiente contenido:
+
+    ```shell
+    SID_LIST_LISTENER =
+    (SID_LIST =
+        (SID_DESC =
+        (SID_NAME = PSQLU)
+        (ORACLE_HOME = /opt/oracle/product/19c/dbhome_1)
+        (PROGRAM = dg4odbc)
+        )
+    )
+    ```
+
+- A continuación, dentro del fichero tnsnames.ora, añadimos lo siguiente:
+
+    ```shell
+    PSQLU  =
+    (DESCRIPTION=
+        (ADDRESS=(PROTOCOL=tcp)(HOST=localhost)(PORT=1521))
+        (CONNECT_DATA=(SID=PSQLU))
+        (HS=OK)
+    )
+    ```
+- Ahora reiniciamos oracle:
+
+    ```shell
+    oracle@oracle:~$ lsnrctl stop
+
+    LSNRCTL for Linux: Version 19.0.0.0.0 - Production on 23-NOV-2022 20:44:24
+
+    Copyright (c) 1991, 2019, Oracle.  All rights reserved.
+
+    Connecting to (DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=0.0.0.0)(PORT=1521)))
+    The command completed successfully
+    oracle@oracle:~$ lsnrctl start
+
+    LSNRCTL for Linux: Version 19.0.0.0.0 - Production on 23-NOV-2022 20:44:27
+
+    Copyright (c) 1991, 2019, Oracle.  All rights reserved.
+
+    Starting /opt/oracle/product/19c/dbhome_1/bin/tnslsnr: please wait...
+
+    TNSLSNR for Linux: Version 19.0.0.0.0 - Production
+    System parameter file is /opt/oracle/product/19c/dbhome_1/network/admin/listener.ora
+    Log messages written to /opt/oracle/diag/tnslsnr/oracle/listener/alert/log.xml
+    Listening on: (DESCRIPTION=(ADDRESS=(PROTOCOL=tcp)(HOST=0.0.0.0)(PORT=1521)))
+    Listening on: (DESCRIPTION=(ADDRESS=(PROTOCOL=ipc)(KEY=EXTPROC1521)))
+
+    Connecting to (DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=0.0.0.0)(PORT=1521)))
+    STATUS of the LISTENER
+    ------------------------
+    Alias                     LISTENER
+    Version                   TNSLSNR for Linux: Version 19.0.0.0.0 - Production
+    Start Date                23-NOV-2022 20:44:27
+    Uptime                    0 days 0 hr. 0 min. 0 sec
+    Trace Level               off
+    Security                  ON: Local OS Authentication
+    SNMP                      OFF
+    Listener Parameter File   /opt/oracle/product/19c/dbhome_1/network/admin/listener.ora
+    Listener Log File         /opt/oracle/diag/tnslsnr/oracle/listener/alert/log.xml
+    Listening Endpoints Summary...
+    (DESCRIPTION=(ADDRESS=(PROTOCOL=tcp)(HOST=0.0.0.0)(PORT=1521)))
+    (DESCRIPTION=(ADDRESS=(PROTOCOL=ipc)(KEY=EXTPROC1521)))
+    Services Summary...
+    Service "PSQLU" has 1 instance(s).
+    Instance "PSQLU", status UNKNOWN, has 1 handler(s) for this service...
+    The command completed successfully
+    ```
+
+- Nos conectamos a oracle con nuestro usuario:
+
+    ```sql
+    oracle@oracle:~$ sqlplus joseju10/joseju10
+
+    SQL*Plus: Release 19.0.0.0.0 - Production on Wed Nov 23 20:45:52 2022
+    Version 19.3.0.0.0
+
+    Copyright (c) 1982, 2019, Oracle.  All rights reserved.
+
+    Hora de Ultima Conexion Correcta: Mie Nov 23 2022 13:59:25 +01:00
+
+    Conectado a:
+    Oracle Database 19c Enterprise Edition Release 19.0.0.0.0 - Production
+    Version 19.3.0.0.0
+
+    SQL> 
+    ```
+- Creamos un link con la base de datos de postgres:
+
+    ```sql 
+    SQL> CREATE DATABASE LINK postgreslink
+    2  CONNECT TO "postgres2" IDENTIFIED BY "postgres"
+    3  USING 'PSQLU';
+
+    Enlace con la base de datos creado.
+    ```
+- Hacemos un select a la tabla dept de postgres para comprobar que funciona:
+
+    ```sql
+    SQL> select *
+    2  from "dept"@postgreslink;
+
+    DEPTNO     DNAME	      LOC
+    ---------- -------------- -------------
+    50         RECOUNTING     MIAMI
+    60         SEARCH	      FLORIDA
+    70         SHELLS	      NEW JERSEY
+    80         OPTIONS	      WASHINTON
+    ```
+
+Ahora que hemos conectado oracle a postgres, lo configuraremos desde postgres a oracle, para ello haremos lo siguiente:
+
+- Primero instalamos los paquetes necesarios:
+
+    ```shell
+    postgres@postgres2:~$ apt install libaio1 postgresql-server-dev-all build-essential git
+    ```
+- Seguidamente descargamos los siguientes archivos:
+
+    ```shell
+    postgres@postgres2:~$ wget https://download.oracle.com/otn_software/linux/instantclient/211000/instantclient-basic-linux.x64-21.1.0.0.0.zip
+
+    postgres@postgres2:~$ wget https://download.oracle.com/otn_software/linux/instantclient/211000/instantclient-sdk-linux.x64-21.1.0.0.0.zip
+
+    postgres@postgres2:~$ wget https://download.oracle.com/otn_software/linux/instantclient/211000/instantclient-sqlplus-linux.x64-21.1.0.0.0.zip
+    ```
+- Descomprimimos los archivos recién descargados:
+
+    ```shell
+    postgres@postgres2:~$ unzip instantclient-basic-linux.x64-21.1.0.0.0.zip
+
+    postgres@postgres2:~$ unzip instantclient-sqlplus-linux.x64-21.1.0.0.0.zip 
+
+    postgres@postgres2:~$ unzip instantclient-sdk-linux.x64-21.1.0.0.0.zip
+    ```
+- Ahora exportaremos las siguientes variables de entorno:
+
+    ```shell
+    postgres@postgres2:~$ export ORACLE_HOME=/home/postgres2/instantclient_21_1
+    postgres@postgres2:~$ export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$ORACLE_HOME
+    postgres@postgres2:~$ export PATH=$PATH:$ORACLE_HOME
+    ```
+- Ahora nos intentamos conectar a nuestro usuario joseju10 de la máquina de oracle:
+
+    ```sql
+    postgres@postgres2:~$ sqlplus c###joseju10/joseju10@192.168.1.43/ORCLCDB
+
+    SQL*Plus: Release 21.0.0.0.0 - Production on Wed Nov 23 21:12:23 2022
+    Version 21.1.0.0.0
+
+    Copyright (c) 1982, 2020, Oracle.  All rights reserved.
+
+    Hora de Ultima Conexion Correcta: Mie Nov 23 2022 20:45:52 +01:00
+
+    Conectado a:
+    Oracle Database 19c Enterprise Edition Release 19.0.0.0.0 - Production
+    Version 19.3.0.0.0
+
+    SQL>
+    ```
+Una vez hemos comprobado que el cliente oracle funciona correctamente, procederemos a la compliación de oracle_fwd, para ello haremos lo siguiente:
+
+- Clonamos el siguiente repositorio:
+
+    ```shell
+    postgres@postgres2:~$ git clone https://github.com/laurenz/oracle_fdw.git
+    Clonando en 'oracle_fdw'...
+    remote: Enumerating objects: 2489, done.
+    remote: Counting objects: 100% (343/343), done.
+    remote: Compressing objects: 100% (124/124), done.
+    remote: Total 2489 (delta 234), reused 324 (delta 219), pack-reused 2146
+    Recibiendo objetos: 100% (2489/2489), 1.43 MiB | 1.13 MiB/s, listo.
+    Resolviendo deltas: 100% (1708/1708), listo.
+    ```
+- Accemos al directorio clonado y compilamos:
+
+    ```shell
+    postgres@postgres2:~/oracle_fdw$ make
+    gcc -Wall -Wmissing-prototypes -Wpointer-arith -Wdeclaration-after-statement -Werror=vla -Wendif-labels -Wmissing-format-attribute -Wimplicit-fallthrough=3 -Wformat-security -fno-strict-aliasing -fwrapv -fexcess-precision=standard -Wno-format-truncation -Wno-stringop-truncation -g -g -O2 -fstack-protector-strong -Wformat -Werror=format-security -fno-omit-frame-pointer -fPIC -I"/home/postgres2/instantclient_21_1/sdk/include" -I"/home/postgres2/instantclient_21_1/oci/include" -I"/home/postgres2/instantclient_21_1/rdbms/public" -I"/home/postgres2/instantclient_21_1/"  -I. -I./ -I/usr/include/postgresql/13/server -I/usr/include/
+
+    root@postgres2:/home/postgres/oracle_fdw# make install
+    /bin/mkdir -p '/usr/lib/postgresql/13/lib'
+    /bin/mkdir -p '/usr/share/postgresql/13/extension'
+    /bin/mkdir -p '/usr/share/postgresql/13/extension'
+    /bin/mkdir -p '/usr/share/doc/postgresql-doc-13/extension'
+    /usr/bin/install -c -m 755  oracle_fdw.so '/usr/lib/postgresql/13/lib/oracle_fdw.so'
+    /usr/bin/install -c -m 644 .//oracle_fdw.control '/usr/share/postgresql/13/extension/'
+    /usr/bin/install -c -m 644 .//oracle_fdw--1.2.sql .//oracle_fdw--1.0--1.1.sql .//oracle_fdw--1.1--1.2.sql  '/usr/share/postgresql/13/extension/'
+    /usr/bin/install -c -m 644 .//README.oracle_fdw '/usr/share/doc/postgresql-doc-13/extension/'
+    ```
+
+- Seguidamente, indicamos en el fichero de configuración oracle.conf el siguiente contenido para indicarle las librerías de Oracle:
+
+    ```shell
+    root@postgres2:/home/postgres/oracle_fdw# echo '/home/postgres/instantclient\_21\_1' | tee /etc/ld.so.conf.d/oracle.conf
+    ```
+
+En este punto ya tenemos configurado el apartado de datos con respecto a la configuración de postgres para acceder a oracle, lo que haremos será crear un esquema con el usuario por defecto de postgres copiando la base de datos que tenemos en oracle a un esquema que crearemos en este punto. 
+
+A dicho esquema le otorgaremos los correspondientes permisos para que el usuario postgres2 pueda crear tablas, realizar consultas... Para ello seguiremos los siguientes pasos:
+
+-  Creamos el enlace de la base de datos de oracle1 a posgres2, para ello accedemos a la base de datos postgres2:
+
+    ```shell
+    postgres@postgres2:~/oracle_fdw$ psql -d postgres2
+    psql (13.8 (Debian 13.8-0+deb11u1))
+    Digite «help» para obtener ayuda.
+
+    postgres2=>
+    ```
+- Creamos dicho enlace:
+
+    ```sql
+    postgres2=# CREATE EXTENSION oracle_fdw;
+    CREATE EXTENSION
+    ```
+- Generamos un esquema de nombre oracle:
+
+    ```sql
+    postgres2=# CREATE SCHEMA oracle;
+    CREATE SCHEMA
+    ```
+- Seguidamente, mapeamos el usuario local al usuario remoto de oracle:
+
+    ```sql
+    postgres2=# CREATE USER MAPPING FOR oracle SERVER oracle OPTIONS (user 'joseju10', password 'joseju10');
+    CREATE USER MAPPING
+    ```
+- Otorgamos permisos al usuario local postgres2:
+
+    ```sql
+    postgres2=# GRANT ALL PRIVILEGES ON SCHEMA oracle TO postgres2;
+    GRANT
+    ```
+    ```sql
+    postgres2=# GRANT ALL PRIVILEGES ON FOREIGN SERVER oracle TO postgres2;
+    GRANT
+    ```
+- Iniciamos sesión con el usuario postgres2:
+
+    ```sql
+    postgres2@postgres2:~$ psql -h localhost -U postgres2 -d postgres2
+    Contraseña para usuario postgres2: 
+    psql (13.8 (Debian 13.8-0+deb11u1))
+    Conexión SSL (protocolo: TLSv1.3, cifrado: TLS_AES_256_GCM_SHA384, bits: 256, compresión: desactivado)
+    Digite «help» para obtener ayuda.
+
+    postgres2=>
+    ```
+- Importamos el esquema creado anteriormente:
+
+    ```sql
+    prueba2=# IMPORT FOREIGN SCHEMA "joseju10" FROM SERVER oracle INTO oracle;
+    IMPORT FOREIGN SCHEMA
+    ```
+- Finalmente realizamos una consulta a la tabla dept del servidor para comprobar si funciona:
+
+    ```sql
+    postgres1=> select *
+    postgres1-> from dept;
+    deptno |   dname    |   loc    
+    --------+------------+----------
+        10 | ACCOUNTING | NEW YORK
+        20 | RESEARCH   | DALLAS
+        30 | SALES      | CHICAGO
+        40 | OPERATIONS | BOSTON
+    (4 filas)
+    ```

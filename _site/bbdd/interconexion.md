@@ -756,14 +756,14 @@ Ahora que hemos conectado oracle a postgres, lo configuraremos desde postgres a 
 - Ahora exportaremos las siguientes variables de entorno:
 
     ```shell
-    postgres@postgres2:~$ export ORACLE_HOME=/home/postgres2/instantclient_21_1
+    postgres@postgres2:~$ export ORACLE_HOME=/home/postgres/instantclient_21_1
     postgres@postgres2:~$ export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$ORACLE_HOME
     postgres@postgres2:~$ export PATH=$PATH:$ORACLE_HOME
     ```
 - Ahora nos intentamos conectar a nuestro usuario joseju10 de la máquina de oracle:
 
     ```sql
-    postgres@postgres2:~$ sqlplus c###joseju10/joseju10@192.168.1.43/ORCLCDB
+    postgres@postgres2:~$ sqlplus joseju10/joseju10@192.168.1.43/ORCLCDB
 
     SQL*Plus: Release 21.0.0.0.0 - Production on Wed Nov 23 21:12:23 2022
     Version 21.1.0.0.0
@@ -796,7 +796,7 @@ Una vez hemos comprobado que el cliente oracle funciona correctamente, procedere
 
     ```shell
     postgres@postgres2:~/oracle_fdw$ make
-    gcc -Wall -Wmissing-prototypes -Wpointer-arith -Wdeclaration-after-statement -Werror=vla -Wendif-labels -Wmissing-format-attribute -Wimplicit-fallthrough=3 -Wformat-security -fno-strict-aliasing -fwrapv -fexcess-precision=standard -Wno-format-truncation -Wno-stringop-truncation -g -g -O2 -fstack-protector-strong -Wformat -Werror=format-security -fno-omit-frame-pointer -fPIC -I"/home/postgres2/instantclient_21_1/sdk/include" -I"/home/postgres2/instantclient_21_1/oci/include" -I"/home/postgres2/instantclient_21_1/rdbms/public" -I"/home/postgres2/instantclient_21_1/"  -I. -I./ -I/usr/include/postgresql/13/server -I/usr/include/
+    gcc -Wall -Wmissing-prototypes -Wpointer-arith -Wdeclaration-after-statement -Werror=vla -Wendif-labels -Wmissing-format-attribute -Wimplicit-fallthrough=3 -Wformat-security -fno-strict-aliasing -fwrapv -fexcess-precision=standard -Wno-format-truncation -Wno-stringop-truncation -g -g -O2 -fstack-protector-strong -Wformat -Werror=format-security -fno-omit-frame-pointer -fPIC -I"/home/postgres/instantclient_21_1/sdk/include" -I"/home/postgres/instantclient_21_1/oci/include" -I"/home/postgres/instantclient_21_1/rdbms/public" -I"/home/postgres/instantclient_21_1/"  -I. -I./ -I/usr/include/postgresql/13/server -I/usr/include/
 
     root@postgres2:/home/postgres/oracle_fdw# make install
     /bin/mkdir -p '/usr/lib/postgresql/13/lib'

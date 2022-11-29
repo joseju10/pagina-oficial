@@ -1,0 +1,859 @@
+<!DOCTYPE html> <html lang="en" dir="auto"> <head><meta charset="utf-8"> <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=5, user-scalable=no"> <meta name="description" content="Compilación de un programa en C utilizando un Makefile. NGINX El programa que he elegido para realizar la compilación es nginx, para compilarlo en ..."> <meta name="revised" content="347724b12926bb6cf078d70f8097c1bcc443bac5"> <meta name="author" content="joseju10"> <meta name="generator" content="jekyll-rtd-theme v2.0.10"><meta name="theme-color" content="#2980b9"> <title>Compilación de un programa en C utilizando un Makefile. · pagina-joseju</title> <meta name="twitter:title" content="Compilación de un programa en C utilizando un Makefile. · pagina-joseju"> <meta name="twitter:description" content="Compilación de un programa en C utilizando un Makefile. NGINX El programa que he elegido para realizar la compilación es nginx, para compilarlo en ..."> <meta name="twitter:card" content="summary"> <meta name="twitter:site" content="@joseju10"> <meta name="twitter:url" content="http://localhost:4000/sistemas/programac.html"> <meta name="twitter:creator" content="@jekyll-rtd-theme v2.0.10"> <meta property="og:title" content="Compilación de un programa en C utilizando un Makefile. · pagina-joseju"> <meta property="og:description" content="Compilación de un programa en C utilizando un Makefile. NGINX El programa que he elegido para realizar la compilación es nginx, para compilarlo en ..."> <meta property="og:locale" content="en"> <meta property="og:url" content="http://localhost:4000/sistemas/programac.html"> <meta property="og:type" content="article"> <meta property="article:author" content="joseju10"> <meta property="article:published_time" content="2022-11-21T20:49:10+01:00"> <meta property="article:modified_time" content="2022-11-29T22:07:20+01:00"> <script type="application/ld+json"> { "@context": "https://schema.org", "@type": "Article", "mainEntityOfPage": { "@type": "WebPage", "@id": "http://localhost:4000/sistemas/programac.html" }, "headline": "Compilación de un programa en C utilizando un Makefile. · pagina-joseju", "image": [], "author": { "@type": "Person", "name": "joseju10" }, "datePublished": "2022-11-21T20:49:10+01:00", "dateModified": "2022-11-29T22:07:20+01:00", "publisher": { "@type": "User", "name": "joseju10", "logo": { "@type": "ImageObject", "url": "https://avatars.githubusercontent.com/u/58250763?v=4" } }, "description": "Compilación de un programa en C utilizando un Makefile. NGINX El programa que he elegido para realizar la compilación es nginx, para compilarlo en ..." } </script> <link rel="dns-prefetch" href="https://cdn.jsdelivr.net"><link rel="prev" href="http://localhost:4000/sistemas/compilacion-kernel.html"><link rel="canonical" href="http://localhost:4000/sistemas/programac.html"><link rel="icon" type="image/svg+xml" href="/assets/images/favicon.svg"><link rel="icon" type="image/png" href="/assets/images/favicon-16x16.png" sizes="16x16"> <link rel="icon" type="image/png" href="/assets/images/favicon-32x32.png" sizes="32x32"> <link rel="icon" type="image/png" href="/assets/images/favicon-96x96.png" sizes="96x96"><link rel="mask-icon" href="/assets/images/favicon.svg" color="#2980b9"><link rel="apple-touch-icon" href="/assets/images/apple-touch-icon-300x300.jpg"> <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/rundocs/jekyll-rtd-theme@2.0.10/assets/css/theme.min.css"><script> window.ui = { title: "pagina-joseju", baseurl: "", i18n: { search_results: "Search Results", search_results_found: "Search finished, found # page(s) matching the search query.", search_results_not_found: "Your search did not match any documents, please make sure that all characters are spelled correctly!" } }; </script> </head> <body class="container"><div class="sidebar-wrap overflow-hidden"> <div class="sidebar height-full overflow-y-scroll overflow-x-hidden"> <div class="header d-flex flex-column p-3 text-center"> <div class="title pb-1"> <a class="h4 no-underline py-1 px-2 rounded-1" href="/" title="Página de documentación de los proyectos de JoseJu10"> <i class="fa fa-home"></i> pagina-joseju </a> </div> <span class="version"></span> <form class="search pt-2" action="/search.html" method="get" autocomplete="off"> <input class="form-control input-block input-sm" type="text" name="q" placeholder="Search docs..."> </form> </div> <div class="toctree py-2" data-spy="affix" role="navigation" aria-label="main navigation"> <ul> </ul> <a class="caption d-block text-uppercase no-wrap px-2 py-0" href="/bbdd/"> BASE DE DATOS </a><ul> <li class="toc level-1 " data-sort="" data-level="1"> <a class="d-flex flex-items-baseline " href="/bbdd/interconexion.html">INTERCONEXIÓN DE SERVIDORES</a> </li></ul> <a class="caption d-block text-uppercase no-wrap px-2 py-0" href="/sistemas/"> SISTEMAS OPERATIVOS </a><ul> <li class="toc level-1 " data-sort="" data-level="1"> <a class="d-flex flex-items-baseline " href="/sistemas/compilacion-kernel.html">COMPILACION DE UN KERNEL LINUX A MEDIDA</a> </li> <li class="toc level-1 current" data-sort="" data-level="1"> <a class="d-flex flex-items-baseline current" href="/sistemas/programac.html">Compilación de un programa en C utilizando un Makefile.</a> </li></ul> </div> </div> </div> <div class="content-wrap"> <div class="header d-flex flex-justify-between p-2 hide-lg hide-xl" aria-label="top navigation"> <button id="toggle" aria-label="Toggle menu" class="btn-octicon p-2 m-0 text-white" type="button"> <i class="fa fa-bars"></i> </button> <div class="title flex-1 d-flex flex-justify-center"> <a class="h4 no-underline py-1 px-2 rounded-1" href="/">pagina-joseju</a> </div> </div> <div class="content p-3 p-sm-5"> <div class="navigation-top d-flex flex-justify-between"> <ul class="breadcrumb" role="navigation" aria-label="breadcrumbs navigation"> <li class="breadcrumb-item"> <a class="no-underline" href="/" title="/"> <i class="fa fa-home"></i> </a> </li><li class="breadcrumb-item" ><a href="/sistemas/">sistemas</a></li><li class="breadcrumb-item" aria-current="page">programac.md</li></ul> <a class="edit" href="https://github.com/joseju10/compilacion_kernel/edit/gh-pages/sistemas/programac.md" title="Edit on GitHub" rel="noreferrer" target="_blank"> <i class="fa fa-edit"></i> </a> </div> <hr> <div role="main" itemscope="itemscope" itemtype="https://schema.org/Article"> <div class="markdown-body" itemprop="articleBody"> <h1 id="compilación-de-un-programa-en-c-utilizando-un-makefile">Compilación de un programa en C utilizando un Makefile.</h1> <h2 id="nginx">NGINX</h2> <p>El programa que he elegido para realizar la compilación es nginx, para compilarlo en nuestro equipo seguiremos los siguientes pasos:</p> <h3 id="pasos-iniciales">Pasos iniciales</h3> <p>Seguiremos los siguientes pasos para compilar nginx en nuestro equipo, para ello hacemos lo siguiente:</p> <ul> <li>Comprobamos la versión del sistema:</li> </ul> <div class="language-shell highlighter-rouge notranslate"><div class="highlight"><pre class="highlight"><code>joseju@joseju:~<span class="nv">$ </span>lsb_release <span class="nt">-ds</span>
+Debian GNU/Linux 11 <span class="o">(</span>bullseye<span class="o">)</span>
+</code></pre>  </div></div> <ul> <li>Instalamos paquetes necesarios si no lo están:</li> </ul> <div class="language-shell highlighter-rouge notranslate"><div class="highlight"><pre class="highlight"><code>joseju@joseju:~<span class="nv">$ </span><span class="nb">sudo </span>apt <span class="nb">install</span> <span class="nt">-y</span> build-essential git tree software-properties-common dirmngr apt-transport-https ufw curl wget
+</code></pre>  </div></div> <ul> <li>Actualizamos paquetería:</li> </ul> <div class="language-shell highlighter-rouge notranslate"><div class="highlight"><pre class="highlight"><code>joseju@joseju:~<span class="nv">$ </span><span class="nb">sudo </span>apt update <span class="nt">-y</span> <span class="o">&amp;&amp;</span> <span class="nb">sudo </span>apt upgrade <span class="nt">-y</span>
+Obj:1 http://deb.debian.org/debian bullseye InRelease
+Obj:2 http://deb.debian.org/debian bullseye-updates InRelease     
+Obj:3 http://security.debian.org/debian-security bullseye-security InRelease
+Obj:4 http://packages.microsoft.com/repos/code stable InRelease   
+Leyendo lista de paquetes... Hecho      
+Creando árbol de dependencias... Hecho
+Leyendo la información de estado... Hecho
+Todos los paquetes están actualizados.
+Leyendo lista de paquetes... Hecho
+Creando árbol de dependencias... Hecho
+Leyendo la información de estado... Hecho
+Calculando la actualización... Hecho
+0 actualizados, 0 nuevos se instalarán, 0 para eliminar y 0 no actualizados.
+</code></pre>  </div></div> <h3 id="compilación">Compilación</h3> <p>En este punto realizaremos la compilación del programa nginx, para ello haremos lo siguiente:</p> <ul> <li>Descargamos el programa comprimido de nginx, en concreto la versión 1.15.8:</li> </ul> <div class="language-shell highlighter-rouge notranslate"><div class="highlight"><pre class="highlight"><code>joseju@joseju:~/nginx<span class="nv">$ </span>wget https://nginx.org/download/nginx-1.15.8.tar.gz <span class="o">&amp;&amp;</span> <span class="nb">tar </span>zxvf nginx-1.15.8.tar.gz
+<span class="nt">--2022-11-29</span> 21:26:25--  https://nginx.org/download/nginx-1.15.8.tar.gz
+Resolviendo nginx.org <span class="o">(</span>nginx.org<span class="o">)</span>... 3.125.197.172, 52.58.199.22, 2a05:d014:edb:5704::6, ...
+Conectando con nginx.org <span class="o">(</span>nginx.org<span class="o">)[</span>3.125.197.172]:443... conectado.
+Petición HTTP enviada, esperando respuesta... 200 OK
+Longitud: 1027862 <span class="o">(</span>1004K<span class="o">)</span> <span class="o">[</span>application/octet-stream]
+Grabando a: «nginx-1.15.8.tar.gz»
+
+nginx-1.15.8.tar.gz 100%[<span class="o">===================&gt;]</span>   1004K  1,19MB/s    en 0,8s    
+
+2022-11-29 21:26:26 <span class="o">(</span>1,19 MB/s<span class="o">)</span> - «nginx-1.15.8.tar.gz» guardado <span class="o">[</span>1027862/1027862]
+
+nginx-1.15.8/
+nginx-1.15.8/auto/
+nginx-1.15.8/conf/
+nginx-1.15.8/contrib/
+nginx-1.15.8/src/
+nginx-1.15.8/configure
+nginx-1.15.8/LICENSE
+nginx-1.15.8/README
+nginx-1.15.8/html/
+nginx-1.15.8/man/
+nginx-1.15.8/CHANGES.ru
+nginx-1.15.8/CHANGES
+nginx-1.15.8/man/nginx.8
+nginx-1.15.8/html/50x.html
+nginx-1.15.8/html/index.html
+nginx-1.15.8/src/core/
+nginx-1.15.8/src/event/
+nginx-1.15.8/src/http/
+nginx-1.15.8/src/mail/
+nginx-1.15.8/src/misc/
+nginx-1.15.8/src/os/
+nginx-1.15.8/src/stream/
+nginx-1.15.8/src/stream/ngx_stream.c
+nginx-1.15.8/src/stream/ngx_stream.h
+nginx-1.15.8/src/stream/ngx_stream_access_module.c
+nginx-1.15.8/src/stream/ngx_stream_core_module.c
+nginx-1.15.8/src/stream/ngx_stream_geo_module.c
+nginx-1.15.8/src/stream/ngx_stream_geoip_module.c
+nginx-1.15.8/src/stream/ngx_stream_handler.c
+nginx-1.15.8/src/stream/ngx_stream_limit_conn_module.c
+nginx-1.15.8/src/stream/ngx_stream_log_module.c
+nginx-1.15.8/src/stream/ngx_stream_map_module.c
+nginx-1.15.8/src/stream/ngx_stream_proxy_module.c
+nginx-1.15.8/src/stream/ngx_stream_realip_module.c
+nginx-1.15.8/src/stream/ngx_stream_return_module.c
+nginx-1.15.8/src/stream/ngx_stream_script.c
+nginx-1.15.8/src/stream/ngx_stream_script.h
+nginx-1.15.8/src/stream/ngx_stream_split_clients_module.c
+nginx-1.15.8/src/stream/ngx_stream_ssl_module.c
+nginx-1.15.8/src/stream/ngx_stream_ssl_module.h
+nginx-1.15.8/src/stream/ngx_stream_ssl_preread_module.c
+nginx-1.15.8/src/stream/ngx_stream_upstream.c
+nginx-1.15.8/src/stream/ngx_stream_upstream.h
+nginx-1.15.8/src/stream/ngx_stream_upstream_hash_module.c
+nginx-1.15.8/src/stream/ngx_stream_upstream_least_conn_module.c
+nginx-1.15.8/src/stream/ngx_stream_upstream_random_module.c
+nginx-1.15.8/src/stream/ngx_stream_upstream_round_robin.c
+nginx-1.15.8/src/stream/ngx_stream_upstream_round_robin.h
+nginx-1.15.8/src/stream/ngx_stream_upstream_zone_module.c
+nginx-1.15.8/src/stream/ngx_stream_variables.c
+nginx-1.15.8/src/stream/ngx_stream_variables.h
+nginx-1.15.8/src/stream/ngx_stream_write_filter_module.c
+nginx-1.15.8/src/os/unix/
+nginx-1.15.8/src/os/unix/ngx_alloc.c
+nginx-1.15.8/src/os/unix/ngx_alloc.h
+nginx-1.15.8/src/os/unix/ngx_atomic.h
+nginx-1.15.8/src/os/unix/ngx_channel.c
+nginx-1.15.8/src/os/unix/ngx_channel.h
+nginx-1.15.8/src/os/unix/ngx_daemon.c
+nginx-1.15.8/src/os/unix/ngx_darwin.h
+nginx-1.15.8/src/os/unix/ngx_darwin_config.h
+nginx-1.15.8/src/os/unix/ngx_darwin_init.c
+nginx-1.15.8/src/os/unix/ngx_darwin_sendfile_chain.c
+nginx-1.15.8/src/os/unix/ngx_dlopen.c
+nginx-1.15.8/src/os/unix/ngx_dlopen.h
+nginx-1.15.8/src/os/unix/ngx_errno.c
+nginx-1.15.8/src/os/unix/ngx_errno.h
+nginx-1.15.8/src/os/unix/ngx_file_aio_read.c
+nginx-1.15.8/src/os/unix/ngx_files.c
+nginx-1.15.8/src/os/unix/ngx_files.h
+nginx-1.15.8/src/os/unix/ngx_freebsd.h
+nginx-1.15.8/src/os/unix/ngx_freebsd_config.h
+nginx-1.15.8/src/os/unix/ngx_linux.h
+nginx-1.15.8/src/os/unix/ngx_freebsd_init.c
+nginx-1.15.8/src/os/unix/ngx_freebsd_sendfile_chain.c
+nginx-1.15.8/src/os/unix/ngx_gcc_atomic_amd64.h
+nginx-1.15.8/src/os/unix/ngx_gcc_atomic_ppc.h
+nginx-1.15.8/src/os/unix/ngx_gcc_atomic_sparc64.h
+nginx-1.15.8/src/os/unix/ngx_gcc_atomic_x86.h
+nginx-1.15.8/src/os/unix/ngx_linux_aio_read.c
+nginx-1.15.8/src/os/unix/ngx_linux_config.h
+nginx-1.15.8/src/os/unix/ngx_linux_init.c
+nginx-1.15.8/src/os/unix/ngx_linux_sendfile_chain.c
+nginx-1.15.8/src/os/unix/ngx_os.h
+nginx-1.15.8/src/os/unix/ngx_posix_config.h
+nginx-1.15.8/src/os/unix/ngx_posix_init.c
+nginx-1.15.8/src/os/unix/ngx_process.c
+nginx-1.15.8/src/os/unix/ngx_process.h
+nginx-1.15.8/src/os/unix/ngx_process_cycle.c
+nginx-1.15.8/src/os/unix/ngx_process_cycle.h
+nginx-1.15.8/src/os/unix/ngx_readv_chain.c
+nginx-1.15.8/src/os/unix/ngx_recv.c
+nginx-1.15.8/src/os/unix/ngx_send.c
+nginx-1.15.8/src/os/unix/ngx_setaffinity.c
+nginx-1.15.8/src/os/unix/ngx_setaffinity.h
+nginx-1.15.8/src/os/unix/ngx_setproctitle.c
+nginx-1.15.8/src/os/unix/ngx_setproctitle.h
+nginx-1.15.8/src/os/unix/ngx_shmem.c
+nginx-1.15.8/src/os/unix/ngx_shmem.h
+nginx-1.15.8/src/os/unix/ngx_socket.c
+nginx-1.15.8/src/os/unix/ngx_socket.h
+nginx-1.15.8/src/os/unix/ngx_solaris.h
+nginx-1.15.8/src/os/unix/ngx_solaris_config.h
+nginx-1.15.8/src/os/unix/ngx_solaris_init.c
+nginx-1.15.8/src/os/unix/ngx_solaris_sendfilev_chain.c
+nginx-1.15.8/src/os/unix/ngx_sunpro_amd64.il
+nginx-1.15.8/src/os/unix/ngx_sunpro_atomic_sparc64.h
+nginx-1.15.8/src/os/unix/ngx_sunpro_sparc64.il
+nginx-1.15.8/src/os/unix/ngx_thread.h
+nginx-1.15.8/src/os/unix/ngx_sunpro_x86.il
+nginx-1.15.8/src/os/unix/ngx_thread_cond.c
+nginx-1.15.8/src/os/unix/ngx_thread_id.c
+nginx-1.15.8/src/os/unix/ngx_thread_mutex.c
+nginx-1.15.8/src/os/unix/ngx_time.c
+nginx-1.15.8/src/os/unix/ngx_time.h
+nginx-1.15.8/src/os/unix/ngx_udp_recv.c
+nginx-1.15.8/src/os/unix/ngx_udp_send.c
+nginx-1.15.8/src/os/unix/ngx_udp_sendmsg_chain.c
+nginx-1.15.8/src/os/unix/ngx_user.c
+nginx-1.15.8/src/os/unix/ngx_user.h
+nginx-1.15.8/src/os/unix/ngx_writev_chain.c
+nginx-1.15.8/src/misc/ngx_cpp_test_module.cpp
+nginx-1.15.8/src/misc/ngx_google_perftools_module.c
+nginx-1.15.8/src/mail/ngx_mail.c
+nginx-1.15.8/src/mail/ngx_mail.h
+nginx-1.15.8/src/mail/ngx_mail_auth_http_module.c
+nginx-1.15.8/src/mail/ngx_mail_core_module.c
+nginx-1.15.8/src/mail/ngx_mail_handler.c
+nginx-1.15.8/src/mail/ngx_mail_imap_handler.c
+nginx-1.15.8/src/mail/ngx_mail_imap_module.c
+nginx-1.15.8/src/mail/ngx_mail_imap_module.h
+nginx-1.15.8/src/mail/ngx_mail_parse.c
+nginx-1.15.8/src/mail/ngx_mail_pop3_handler.c
+nginx-1.15.8/src/mail/ngx_mail_pop3_module.c
+nginx-1.15.8/src/mail/ngx_mail_pop3_module.h
+nginx-1.15.8/src/mail/ngx_mail_proxy_module.c
+nginx-1.15.8/src/mail/ngx_mail_smtp_handler.c
+nginx-1.15.8/src/mail/ngx_mail_smtp_module.c
+nginx-1.15.8/src/mail/ngx_mail_smtp_module.h
+nginx-1.15.8/src/mail/ngx_mail_ssl_module.c
+nginx-1.15.8/src/mail/ngx_mail_ssl_module.h
+nginx-1.15.8/src/http/modules/
+nginx-1.15.8/src/http/ngx_http.c
+nginx-1.15.8/src/http/ngx_http.h
+nginx-1.15.8/src/http/ngx_http_cache.h
+nginx-1.15.8/src/http/ngx_http_config.h
+nginx-1.15.8/src/http/ngx_http_copy_filter_module.c
+nginx-1.15.8/src/http/ngx_http_core_module.c
+nginx-1.15.8/src/http/ngx_http_core_module.h
+nginx-1.15.8/src/http/ngx_http_file_cache.c
+nginx-1.15.8/src/http/ngx_http_header_filter_module.c
+nginx-1.15.8/src/http/ngx_http_parse.c
+nginx-1.15.8/src/http/ngx_http_postpone_filter_module.c
+nginx-1.15.8/src/http/ngx_http_request.c
+nginx-1.15.8/src/http/ngx_http_request.h
+nginx-1.15.8/src/http/ngx_http_request_body.c
+nginx-1.15.8/src/http/ngx_http_script.c
+nginx-1.15.8/src/http/v2/
+nginx-1.15.8/src/http/ngx_http_script.h
+nginx-1.15.8/src/http/ngx_http_special_response.c
+nginx-1.15.8/src/http/ngx_http_upstream.c
+nginx-1.15.8/src/http/ngx_http_upstream.h
+nginx-1.15.8/src/http/ngx_http_upstream_round_robin.c
+nginx-1.15.8/src/http/ngx_http_upstream_round_robin.h
+nginx-1.15.8/src/http/ngx_http_variables.c
+nginx-1.15.8/src/http/ngx_http_variables.h
+nginx-1.15.8/src/http/ngx_http_write_filter_module.c
+nginx-1.15.8/src/http/v2/ngx_http_v2.c
+nginx-1.15.8/src/http/v2/ngx_http_v2.h
+nginx-1.15.8/src/http/v2/ngx_http_v2_encode.c
+nginx-1.15.8/src/http/v2/ngx_http_v2_filter_module.c
+nginx-1.15.8/src/http/v2/ngx_http_v2_huff_decode.c
+nginx-1.15.8/src/http/v2/ngx_http_v2_huff_encode.c
+nginx-1.15.8/src/http/v2/ngx_http_v2_module.c
+nginx-1.15.8/src/http/v2/ngx_http_v2_module.h
+nginx-1.15.8/src/http/v2/ngx_http_v2_table.c
+nginx-1.15.8/src/http/modules/ngx_http_access_module.c
+nginx-1.15.8/src/http/modules/ngx_http_addition_filter_module.c
+nginx-1.15.8/src/http/modules/ngx_http_auth_basic_module.c
+nginx-1.15.8/src/http/modules/ngx_http_auth_request_module.c
+nginx-1.15.8/src/http/modules/ngx_http_autoindex_module.c
+nginx-1.15.8/src/http/modules/ngx_http_browser_module.c
+nginx-1.15.8/src/http/modules/ngx_http_charset_filter_module.c
+nginx-1.15.8/src/http/modules/ngx_http_chunked_filter_module.c
+nginx-1.15.8/src/http/modules/ngx_http_dav_module.c
+nginx-1.15.8/src/http/modules/ngx_http_degradation_module.c
+nginx-1.15.8/src/http/modules/ngx_http_empty_gif_module.c
+nginx-1.15.8/src/http/modules/ngx_http_fastcgi_module.c
+nginx-1.15.8/src/http/modules/perl/
+nginx-1.15.8/src/http/modules/ngx_http_flv_module.c
+nginx-1.15.8/src/http/modules/ngx_http_geo_module.c
+nginx-1.15.8/src/http/modules/ngx_http_geoip_module.c
+nginx-1.15.8/src/http/modules/ngx_http_grpc_module.c
+nginx-1.15.8/src/http/modules/ngx_http_gunzip_filter_module.c
+nginx-1.15.8/src/http/modules/ngx_http_gzip_filter_module.c
+nginx-1.15.8/src/http/modules/ngx_http_gzip_static_module.c
+nginx-1.15.8/src/http/modules/ngx_http_headers_filter_module.c
+nginx-1.15.8/src/http/modules/ngx_http_image_filter_module.c
+nginx-1.15.8/src/http/modules/ngx_http_index_module.c
+nginx-1.15.8/src/http/modules/ngx_http_limit_conn_module.c
+nginx-1.15.8/src/http/modules/ngx_http_limit_req_module.c
+nginx-1.15.8/src/http/modules/ngx_http_log_module.c
+nginx-1.15.8/src/http/modules/ngx_http_map_module.c
+nginx-1.15.8/src/http/modules/ngx_http_memcached_module.c
+nginx-1.15.8/src/http/modules/ngx_http_mirror_module.c
+nginx-1.15.8/src/http/modules/ngx_http_mp4_module.c
+nginx-1.15.8/src/http/modules/ngx_http_not_modified_filter_module.c
+nginx-1.15.8/src/http/modules/ngx_http_proxy_module.c
+nginx-1.15.8/src/http/modules/ngx_http_random_index_module.c
+nginx-1.15.8/src/http/modules/ngx_http_range_filter_module.c
+nginx-1.15.8/src/http/modules/ngx_http_realip_module.c
+nginx-1.15.8/src/http/modules/ngx_http_referer_module.c
+nginx-1.15.8/src/http/modules/ngx_http_rewrite_module.c
+nginx-1.15.8/src/http/modules/ngx_http_scgi_module.c
+nginx-1.15.8/src/http/modules/ngx_http_secure_link_module.c
+nginx-1.15.8/src/http/modules/ngx_http_slice_filter_module.c
+nginx-1.15.8/src/http/modules/ngx_http_split_clients_module.c
+nginx-1.15.8/src/http/modules/ngx_http_ssi_filter_module.c
+nginx-1.15.8/src/http/modules/ngx_http_ssi_filter_module.h
+nginx-1.15.8/src/http/modules/ngx_http_ssl_module.c
+nginx-1.15.8/src/http/modules/ngx_http_ssl_module.h
+nginx-1.15.8/src/http/modules/ngx_http_static_module.c
+nginx-1.15.8/src/http/modules/ngx_http_stub_status_module.c
+nginx-1.15.8/src/http/modules/ngx_http_sub_filter_module.c
+nginx-1.15.8/src/http/modules/ngx_http_try_files_module.c
+nginx-1.15.8/src/http/modules/ngx_http_upstream_hash_module.c
+nginx-1.15.8/src/http/modules/ngx_http_upstream_ip_hash_module.c
+nginx-1.15.8/src/http/modules/ngx_http_upstream_keepalive_module.c
+nginx-1.15.8/src/http/modules/ngx_http_upstream_random_module.c
+nginx-1.15.8/src/http/modules/ngx_http_upstream_least_conn_module.c
+nginx-1.15.8/src/http/modules/ngx_http_upstream_zone_module.c
+nginx-1.15.8/src/http/modules/ngx_http_userid_filter_module.c
+nginx-1.15.8/src/http/modules/ngx_http_uwsgi_module.c
+nginx-1.15.8/src/http/modules/ngx_http_xslt_filter_module.c
+nginx-1.15.8/src/http/modules/perl/Makefile.PL
+nginx-1.15.8/src/http/modules/perl/nginx.pm
+nginx-1.15.8/src/http/modules/perl/nginx.xs
+nginx-1.15.8/src/http/modules/perl/ngx_http_perl_module.c
+nginx-1.15.8/src/http/modules/perl/ngx_http_perl_module.h
+nginx-1.15.8/src/http/modules/perl/typemap
+nginx-1.15.8/src/event/modules/
+nginx-1.15.8/src/event/ngx_event.c
+nginx-1.15.8/src/event/ngx_event.h
+nginx-1.15.8/src/event/ngx_event_accept.c
+nginx-1.15.8/src/event/ngx_event_connect.c
+nginx-1.15.8/src/event/ngx_event_connect.h
+nginx-1.15.8/src/event/ngx_event_openssl.c
+nginx-1.15.8/src/event/ngx_event_openssl.h
+nginx-1.15.8/src/event/ngx_event_openssl_stapling.c
+nginx-1.15.8/src/event/ngx_event_pipe.c
+nginx-1.15.8/src/event/ngx_event_pipe.h
+nginx-1.15.8/src/event/ngx_event_posted.c
+nginx-1.15.8/src/event/ngx_event_posted.h
+nginx-1.15.8/src/event/ngx_event_timer.c
+nginx-1.15.8/src/event/ngx_event_timer.h
+nginx-1.15.8/src/event/ngx_event_udp.c
+nginx-1.15.8/src/event/modules/ngx_devpoll_module.c
+nginx-1.15.8/src/event/modules/ngx_epoll_module.c
+nginx-1.15.8/src/event/modules/ngx_eventport_module.c
+nginx-1.15.8/src/event/modules/ngx_kqueue_module.c
+nginx-1.15.8/src/event/modules/ngx_poll_module.c
+nginx-1.15.8/src/event/modules/ngx_select_module.c
+nginx-1.15.8/src/event/modules/ngx_win32_select_module.c
+nginx-1.15.8/src/core/nginx.c
+nginx-1.15.8/src/core/nginx.h
+nginx-1.15.8/src/core/ngx_array.c
+nginx-1.15.8/src/core/ngx_array.h
+nginx-1.15.8/src/core/ngx_buf.c
+nginx-1.15.8/src/core/ngx_buf.h
+nginx-1.15.8/src/core/ngx_conf_file.c
+nginx-1.15.8/src/core/ngx_conf_file.h
+nginx-1.15.8/src/core/ngx_config.h
+nginx-1.15.8/src/core/ngx_connection.c
+nginx-1.15.8/src/core/ngx_connection.h
+nginx-1.15.8/src/core/ngx_core.h
+nginx-1.15.8/src/core/ngx_cpuinfo.c
+nginx-1.15.8/src/core/ngx_crc.h
+nginx-1.15.8/src/core/ngx_crc32.c
+nginx-1.15.8/src/core/ngx_crc32.h
+nginx-1.15.8/src/core/ngx_crypt.c
+nginx-1.15.8/src/core/ngx_crypt.h
+nginx-1.15.8/src/core/ngx_cycle.c
+nginx-1.15.8/src/core/ngx_cycle.h
+nginx-1.15.8/src/core/ngx_file.c
+nginx-1.15.8/src/core/ngx_file.h
+nginx-1.15.8/src/core/ngx_hash.c
+nginx-1.15.8/src/core/ngx_hash.h
+nginx-1.15.8/src/core/ngx_inet.c
+nginx-1.15.8/src/core/ngx_inet.h
+nginx-1.15.8/src/core/ngx_list.c
+nginx-1.15.8/src/core/ngx_list.h
+nginx-1.15.8/src/core/ngx_log.c
+nginx-1.15.8/src/core/ngx_log.h
+nginx-1.15.8/src/core/ngx_md5.c
+nginx-1.15.8/src/core/ngx_md5.h
+nginx-1.15.8/src/core/ngx_module.c
+nginx-1.15.8/src/core/ngx_module.h
+nginx-1.15.8/src/core/ngx_murmurhash.c
+nginx-1.15.8/src/core/ngx_murmurhash.h
+nginx-1.15.8/src/core/ngx_open_file_cache.c
+nginx-1.15.8/src/core/ngx_open_file_cache.h
+nginx-1.15.8/src/core/ngx_output_chain.c
+nginx-1.15.8/src/core/ngx_palloc.c
+nginx-1.15.8/src/core/ngx_palloc.h
+nginx-1.15.8/src/core/ngx_parse.c
+nginx-1.15.8/src/core/ngx_parse.h
+nginx-1.15.8/src/core/ngx_parse_time.c
+nginx-1.15.8/src/core/ngx_queue.c
+nginx-1.15.8/src/core/ngx_parse_time.h
+nginx-1.15.8/src/core/ngx_proxy_protocol.c
+nginx-1.15.8/src/core/ngx_proxy_protocol.h
+nginx-1.15.8/src/core/ngx_queue.h
+nginx-1.15.8/src/core/ngx_radix_tree.c
+nginx-1.15.8/src/core/ngx_radix_tree.h
+nginx-1.15.8/src/core/ngx_rbtree.c
+nginx-1.15.8/src/core/ngx_rbtree.h
+nginx-1.15.8/src/core/ngx_regex.c
+nginx-1.15.8/src/core/ngx_regex.h
+nginx-1.15.8/src/core/ngx_resolver.c
+nginx-1.15.8/src/core/ngx_resolver.h
+nginx-1.15.8/src/core/ngx_rwlock.c
+nginx-1.15.8/src/core/ngx_rwlock.h
+nginx-1.15.8/src/core/ngx_sha1.c
+nginx-1.15.8/src/core/ngx_sha1.h
+nginx-1.15.8/src/core/ngx_shmtx.c
+nginx-1.15.8/src/core/ngx_shmtx.h
+nginx-1.15.8/src/core/ngx_slab.c
+nginx-1.15.8/src/core/ngx_slab.h
+nginx-1.15.8/src/core/ngx_spinlock.c
+nginx-1.15.8/src/core/ngx_string.c
+nginx-1.15.8/src/core/ngx_string.h
+nginx-1.15.8/src/core/ngx_syslog.c
+nginx-1.15.8/src/core/ngx_syslog.h
+nginx-1.15.8/src/core/ngx_thread_pool.c
+nginx-1.15.8/src/core/ngx_thread_pool.h
+nginx-1.15.8/src/core/ngx_times.c
+nginx-1.15.8/src/core/ngx_times.h
+nginx-1.15.8/contrib/README
+nginx-1.15.8/contrib/geo2nginx.pl
+nginx-1.15.8/contrib/unicode2nginx/
+nginx-1.15.8/contrib/vim/
+nginx-1.15.8/contrib/vim/ftdetect/
+nginx-1.15.8/contrib/vim/ftplugin/
+nginx-1.15.8/contrib/vim/indent/
+nginx-1.15.8/contrib/vim/syntax/
+nginx-1.15.8/contrib/vim/syntax/nginx.vim
+nginx-1.15.8/contrib/vim/indent/nginx.vim
+nginx-1.15.8/contrib/vim/ftplugin/nginx.vim
+nginx-1.15.8/contrib/vim/ftdetect/nginx.vim
+nginx-1.15.8/contrib/unicode2nginx/koi-utf
+nginx-1.15.8/contrib/unicode2nginx/unicode-to-nginx.pl
+nginx-1.15.8/contrib/unicode2nginx/win-utf
+nginx-1.15.8/conf/fastcgi.conf
+nginx-1.15.8/conf/fastcgi_params
+nginx-1.15.8/conf/koi-utf
+nginx-1.15.8/conf/koi-win
+nginx-1.15.8/conf/mime.types
+nginx-1.15.8/conf/nginx.conf
+nginx-1.15.8/conf/scgi_params
+nginx-1.15.8/conf/uwsgi_params
+nginx-1.15.8/conf/win-utf
+nginx-1.15.8/auto/cc/
+nginx-1.15.8/auto/define
+nginx-1.15.8/auto/endianness
+nginx-1.15.8/auto/feature
+nginx-1.15.8/auto/have
+nginx-1.15.8/auto/have_headers
+nginx-1.15.8/auto/headers
+nginx-1.15.8/auto/include
+nginx-1.15.8/auto/init
+nginx-1.15.8/auto/install
+nginx-1.15.8/auto/lib/
+nginx-1.15.8/auto/make
+nginx-1.15.8/auto/module
+nginx-1.15.8/auto/modules
+nginx-1.15.8/auto/nohave
+nginx-1.15.8/auto/options
+nginx-1.15.8/auto/os/
+nginx-1.15.8/auto/sources
+nginx-1.15.8/auto/stubs
+nginx-1.15.8/auto/summary
+nginx-1.15.8/auto/threads
+nginx-1.15.8/auto/types/
+nginx-1.15.8/auto/unix
+nginx-1.15.8/auto/types/sizeof
+nginx-1.15.8/auto/types/typedef
+nginx-1.15.8/auto/types/uintptr_t
+nginx-1.15.8/auto/types/value
+nginx-1.15.8/auto/os/conf
+nginx-1.15.8/auto/os/darwin
+nginx-1.15.8/auto/os/freebsd
+nginx-1.15.8/auto/os/linux
+nginx-1.15.8/auto/os/solaris
+nginx-1.15.8/auto/os/win32
+nginx-1.15.8/auto/lib/conf
+nginx-1.15.8/auto/lib/geoip/
+nginx-1.15.8/auto/lib/google-perftools/
+nginx-1.15.8/auto/lib/libatomic/
+nginx-1.15.8/auto/lib/libgd/
+nginx-1.15.8/auto/lib/libxslt/
+nginx-1.15.8/auto/lib/make
+nginx-1.15.8/auto/lib/openssl/
+nginx-1.15.8/auto/lib/pcre/
+nginx-1.15.8/auto/lib/perl/
+nginx-1.15.8/auto/lib/zlib/
+nginx-1.15.8/auto/lib/zlib/conf
+nginx-1.15.8/auto/lib/zlib/make
+nginx-1.15.8/auto/lib/zlib/makefile.bcc
+nginx-1.15.8/auto/lib/zlib/makefile.msvc
+nginx-1.15.8/auto/lib/zlib/makefile.owc
+nginx-1.15.8/auto/lib/perl/conf
+nginx-1.15.8/auto/lib/perl/make
+nginx-1.15.8/auto/lib/pcre/conf
+nginx-1.15.8/auto/lib/pcre/make
+nginx-1.15.8/auto/lib/pcre/makefile.bcc
+nginx-1.15.8/auto/lib/pcre/makefile.msvc
+nginx-1.15.8/auto/lib/pcre/makefile.owc
+nginx-1.15.8/auto/lib/openssl/conf
+nginx-1.15.8/auto/lib/openssl/make
+nginx-1.15.8/auto/lib/openssl/makefile.bcc
+nginx-1.15.8/auto/lib/openssl/makefile.msvc
+nginx-1.15.8/auto/lib/libxslt/conf
+nginx-1.15.8/auto/lib/libgd/conf
+nginx-1.15.8/auto/lib/libatomic/conf
+nginx-1.15.8/auto/lib/libatomic/make
+nginx-1.15.8/auto/lib/google-perftools/conf
+nginx-1.15.8/auto/lib/geoip/conf
+nginx-1.15.8/auto/cc/acc
+nginx-1.15.8/auto/cc/bcc
+nginx-1.15.8/auto/cc/ccc
+nginx-1.15.8/auto/cc/clang
+nginx-1.15.8/auto/cc/conf
+nginx-1.15.8/auto/cc/gcc
+nginx-1.15.8/auto/cc/icc
+nginx-1.15.8/auto/cc/msvc
+nginx-1.15.8/auto/cc/name
+nginx-1.15.8/auto/cc/owc
+nginx-1.15.8/auto/cc/sunc
+</code></pre>  </div></div> <ul> <li>También descargamos el codigo fuente de las dependencias oblitagorias:</li> </ul> <div class="language-shell highlighter-rouge notranslate"><div class="highlight"><pre class="highlight"><code>joseju@joseju:~/nginx/dep<span class="nv">$ </span>wget https://www.openssl.org/source/openssl-1.1.1a.tar.gz <span class="o">&amp;&amp;</span> <span class="nb">tar </span>xzvf openssl-1.1.1a.tar.gz
+<span class="nt">--2022-11-29</span> 21:28:30--  https://www.openssl.org/source/openssl-1.1.1a.tar.gz
+Resolviendo www.openssl.org <span class="o">(</span>www.openssl.org<span class="o">)</span>... 184.25.37.154, 2a02:26f0:dd:497::c1e, 2a02:26f0:dd:49b::c1e
+Conectando con www.openssl.org <span class="o">(</span>www.openssl.org<span class="o">)[</span>184.25.37.154]:443... conectado.
+Petición HTTP enviada, esperando respuesta... 200 OK
+Longitud: 8350547 <span class="o">(</span>8,0M<span class="o">)</span> <span class="o">[</span>application/x-gzip]
+Grabando a: «openssl-1.1.1a.tar.gz»
+
+openssl-1.1.1a.tar.gz     100%[<span class="o">=====================================&gt;]</span>   7,96M  2,24MB/s    en 3,7s    
+
+2022-11-29 21:28:35 <span class="o">(</span>2,18 MB/s<span class="o">)</span> - «openssl-1.1.1a.tar.gz» guardado <span class="o">[</span>8350547/8350547]
+</code></pre>  </div></div> <ul> <li>Accedemos al directorio a compilar y copiamos el manual al directorio /usr/share:</li> </ul> <div class="language-shell highlighter-rouge notranslate"><div class="highlight"><pre class="highlight"><code>joseju@joseju:~/nginx<span class="nv">$ </span><span class="nb">sudo cp </span>nginx-1.15.8/man/nginx.8 /usr/share/man/man8
+joseju@joseju:~/nginx<span class="nv">$ </span><span class="nb">sudo gzip</span> /usr/share/man/man8/nginx.8 
+joseju@joseju:~/nginx<span class="nv">$ </span><span class="nb">ls</span> /usr/share/man/man8 | egrep nginx.8.gz
+nginx.8.gz
+</code></pre>  </div></div> <ul> <li>Hecho esto, creamos el makefile:</li> </ul> <div class="language-shell highlighter-rouge notranslate"><div class="highlight"><pre class="highlight"><code>joseju@joseju:~/nginx/nginx-1.15.8<span class="nv">$ </span>./configure <span class="nt">--prefix</span><span class="o">=</span>/etc/nginx <span class="se">\</span>
+            <span class="nt">--sbin-path</span><span class="o">=</span>/usr/sbin/nginx <span class="se">\</span>
+            <span class="nt">--modules-path</span><span class="o">=</span>/usr/lib/nginx/modules <span class="se">\</span>
+            <span class="nt">--conf-path</span><span class="o">=</span>/etc/nginx/nginx.conf <span class="se">\</span>
+            <span class="nt">--error-log-path</span><span class="o">=</span>/var/log/nginx/error.log <span class="se">\</span>
+            <span class="nt">--pid-path</span><span class="o">=</span>/var/run/nginx.pid <span class="se">\</span>
+            <span class="nt">--lock-path</span><span class="o">=</span>/var/run/nginx.lock <span class="se">\</span>
+            <span class="nt">--user</span><span class="o">=</span>nginx <span class="se">\</span>
+            <span class="nt">--group</span><span class="o">=</span>nginx <span class="se">\</span>
+            <span class="nt">--build</span><span class="o">=</span>Debian <span class="se">\</span>
+            <span class="nt">--builddir</span><span class="o">=</span>nginx-1.15.8 <span class="se">\</span>
+            <span class="nt">--with-select_module</span> <span class="se">\</span>
+            <span class="nt">--with-poll_module</span> <span class="se">\</span>
+            <span class="nt">--with-threads</span> <span class="se">\</span>
+            <span class="nt">--with-file-aio</span> <span class="se">\</span>
+            <span class="nt">--with-http_ssl_module</span> <span class="se">\</span>
+            <span class="nt">--with-http_v2_module</span> <span class="se">\</span>
+            <span class="nt">--with-http_realip_module</span> <span class="se">\</span>
+            <span class="nt">--with-http_addition_module</span> <span class="se">\</span>
+            <span class="nt">--with-http_xslt_module</span><span class="o">=</span>dynamic <span class="se">\</span>
+            <span class="nt">--with-http_image_filter_module</span><span class="o">=</span>dynamic <span class="se">\</span>
+            <span class="nt">--with-http_geoip_module</span><span class="o">=</span>dynamic <span class="se">\</span>
+            <span class="nt">--with-http_sub_module</span> <span class="se">\</span>
+            <span class="nt">--with-http_dav_module</span> <span class="se">\</span>
+            <span class="nt">--with-http_flv_module</span> <span class="se">\</span>
+            <span class="nt">--with-http_mp4_module</span> <span class="se">\</span>
+            <span class="nt">--with-http_gunzip_module</span> <span class="se">\</span>
+            <span class="nt">--with-debugsl-opt</span><span class="o">=</span>no-nextprotoneg <span class="se">\ \/</span>scgi_temp <span class="se">\ \m</span>p <span class="se">\p</span> <span class="se">\</span>
+checking <span class="k">for </span>OS
+ + Linux 5.10.0-19-amd64 x86_64
+checking <span class="k">for </span>C compiler ... found
+ + using GNU C compiler
+ + gcc version: 10.2.1 20210110 <span class="o">(</span>Debian 10.2.1-6<span class="o">)</span> 
+checking <span class="k">for </span>gcc <span class="nt">-pipe</span> switch ... found
+checking <span class="k">for</span> <span class="nt">-Wl</span>,-E switch ... found
+checking <span class="k">for </span>gcc <span class="nb">builtin </span>atomic operations ... found
+checking <span class="k">for </span>C99 variadic macros ... found
+checking <span class="k">for </span>gcc variadic macros ... found
+checking <span class="k">for </span>gcc <span class="nb">builtin </span>64 bit byteswap ... found
+checking <span class="k">for </span>unistd.h ... found
+checking <span class="k">for </span>inttypes.h ... found
+checking <span class="k">for </span>limits.h ... found
+checking <span class="k">for </span>sys/filio.h ... not found
+checking <span class="k">for </span>sys/param.h ... found
+checking <span class="k">for </span>sys/mount.h ... found
+checking <span class="k">for </span>sys/statvfs.h ... found
+checking <span class="k">for </span>crypt.h ... found
+checking <span class="k">for </span>Linux specific features
+checking <span class="k">for </span>epoll ... found
+checking <span class="k">for </span>EPOLLRDHUP ... found
+checking <span class="k">for </span>EPOLLEXCLUSIVE ... found
+checking <span class="k">for </span>O_PATH ... found
+checking <span class="k">for </span>sendfile<span class="o">()</span> ... found
+checking <span class="k">for </span>sendfile64<span class="o">()</span> ... found
+checking <span class="k">for </span>sys/prctl.h ... found
+checking <span class="k">for </span>prctl<span class="o">(</span>PR_SET_DUMPABLE<span class="o">)</span> ... found
+checking <span class="k">for </span>prctl<span class="o">(</span>PR_SET_KEEPCAPS<span class="o">)</span> ... found
+checking <span class="k">for </span>capabilities ... found
+checking <span class="k">for </span>crypt_r<span class="o">()</span> ... found
+checking <span class="k">for </span>sys/vfs.h ... found
+checking <span class="k">for </span>poll<span class="o">()</span> ... found
+checking <span class="k">for</span> /dev/poll ... not found
+checking <span class="k">for </span>kqueue ... not found
+checking <span class="k">for </span>crypt<span class="o">()</span> ... not found
+checking <span class="k">for </span>crypt<span class="o">()</span> <span class="k">in </span>libcrypt ... found
+checking <span class="k">for </span>F_READAHEAD ... not found
+checking <span class="k">for </span>posix_fadvise<span class="o">()</span> ... found
+checking <span class="k">for </span>O_DIRECT ... found
+checking <span class="k">for </span>F_NOCACHE ... not found
+checking <span class="k">for </span>directio<span class="o">()</span> ... not found
+checking <span class="k">for </span>statfs<span class="o">()</span> ... found
+checking <span class="k">for </span>statvfs<span class="o">()</span> ... found
+checking <span class="k">for </span>dlopen<span class="o">()</span> ... not found
+checking <span class="k">for </span>dlopen<span class="o">()</span> <span class="k">in </span>libdl ... found
+checking <span class="k">for </span>sched_yield<span class="o">()</span> ... found
+checking <span class="k">for </span>sched_setaffinity<span class="o">()</span> ... found
+checking <span class="k">for </span>SO_SETFIB ... not found
+checking <span class="k">for </span>SO_REUSEPORT ... found
+checking <span class="k">for </span>SO_ACCEPTFILTER ... not found
+checking <span class="k">for </span>SO_BINDANY ... not found
+checking <span class="k">for </span>IP_TRANSPARENT ... found
+checking <span class="k">for </span>IP_BINDANY ... not found
+checking <span class="k">for </span>IP_BIND_ADDRESS_NO_PORT ... found
+checking <span class="k">for </span>IP_RECVDSTADDR ... not found
+checking <span class="k">for </span>IP_SENDSRCADDR ... not found
+checking <span class="k">for </span>IP_PKTINFO ... found
+checking <span class="k">for </span>IPV6_RECVPKTINFO ... found
+checking <span class="k">for </span>TCP_DEFER_ACCEPT ... found
+checking <span class="k">for </span>TCP_KEEPIDLE ... found
+checking <span class="k">for </span>TCP_FASTOPEN ... found
+checking <span class="k">for </span>TCP_INFO ... found
+checking <span class="k">for </span>accept4<span class="o">()</span> ... found
+checking <span class="k">for </span>kqueue AIO support ... not found
+checking <span class="k">for </span>Linux AIO support ... found
+checking <span class="k">for </span>int size ... 4 bytes
+checking <span class="k">for </span>long size ... 8 bytes
+checking <span class="k">for </span>long long size ... 8 bytes
+checking <span class="k">for </span>void <span class="k">*</span> size ... 8 bytes
+checking <span class="k">for </span>uint32_t ... found
+checking <span class="k">for </span>uint64_t ... found
+checking <span class="k">for </span>sig_atomic_t ... found
+checking <span class="k">for </span>sig_atomic_t size ... 4 bytes
+checking <span class="k">for </span>socklen_t ... found
+checking <span class="k">for </span>in_addr_t ... found
+checking <span class="k">for </span>in_port_t ... found
+checking <span class="k">for </span>rlim_t ... found
+checking <span class="k">for </span>uintptr_t ... uintptr_t found
+checking <span class="k">for </span>system byte ordering ... little endian
+checking <span class="k">for </span>size_t size ... 8 bytes
+checking <span class="k">for </span>off_t size ... 8 bytes
+checking <span class="k">for </span>time_t size ... 8 bytes
+checking <span class="k">for </span>AF_INET6 ... found
+checking <span class="k">for </span>setproctitle<span class="o">()</span> ... not found
+checking <span class="k">for </span>pread<span class="o">()</span> ... found
+checking <span class="k">for </span>pwrite<span class="o">()</span> ... found
+checking <span class="k">for </span>pwritev<span class="o">()</span> ... found
+checking <span class="k">for </span>sys_nerr ... found
+checking <span class="k">for </span>localtime_r<span class="o">()</span> ... found
+checking <span class="k">for </span>clock_gettime<span class="o">(</span>CLOCK_MONOTONIC<span class="o">)</span> ... found
+checking <span class="k">for </span>posix_memalign<span class="o">()</span> ... found
+checking <span class="k">for </span>memalign<span class="o">()</span> ... found
+checking <span class="k">for </span>mmap<span class="o">(</span>MAP_ANON|MAP_SHARED<span class="o">)</span> ... found
+checking <span class="k">for </span>mmap<span class="o">(</span><span class="s2">"/dev/zero"</span>, MAP_SHARED<span class="o">)</span> ... found
+checking <span class="k">for </span>System V shared memory ... found
+checking <span class="k">for </span>POSIX semaphores ... not found
+checking <span class="k">for </span>POSIX semaphores <span class="k">in </span>libpthread ... found
+checking <span class="k">for </span>struct msghdr.msg_control ... found
+checking <span class="k">for </span>ioctl<span class="o">(</span>FIONBIO<span class="o">)</span> ... found
+checking <span class="k">for </span>struct tm.tm_gmtoff ... found
+checking <span class="k">for </span>struct dirent.d_namlen ... not found
+checking <span class="k">for </span>struct dirent.d_type ... found
+checking <span class="k">for </span>sysconf<span class="o">(</span>_SC_NPROCESSORS_ONLN<span class="o">)</span> ... found
+checking <span class="k">for </span>sysconf<span class="o">(</span>_SC_LEVEL1_DCACHE_LINESIZE<span class="o">)</span> ... found
+checking <span class="k">for </span>openat<span class="o">()</span>, fstatat<span class="o">()</span> ... found
+checking <span class="k">for </span>getaddrinfo<span class="o">()</span> ... found
+checking <span class="k">for </span>libxslt ... found
+checking <span class="k">for </span>libexslt ... found
+checking <span class="k">for </span>GD library ... found
+checking <span class="k">for </span>GD WebP support ... found
+checking <span class="k">for </span>perl
+ + perl version: This is perl 5, version 32, subversion 1 <span class="o">(</span>v5.32.1<span class="o">)</span> built <span class="k">for </span>x86_64-linux-gnu-thread-multi
+ + perl interpreter multiplicity found
+checking <span class="k">for </span>GeoIP library ... found
+checking <span class="k">for </span>GeoIP IPv6 support ... found
+creating nginx-1.15.8/Makefile
+
+Configuration summary
+  + using threads
+  + using PCRE library: ../dep/pcre-8.42
+  + using OpenSSL library: ../dep/openssl-1.1.1a
+  + using zlib library: ../dep/zlib-1.2.13
+
+  nginx path prefix: <span class="s2">"/etc/nginx"</span>
+  nginx binary file: <span class="s2">"/usr/sbin/nginx"</span>
+  nginx modules path: <span class="s2">"/usr/lib/nginx/modules"</span>
+  nginx configuration prefix: <span class="s2">"/etc/nginx"</span>
+  nginx configuration file: <span class="s2">"/etc/nginx/nginx.conf"</span>
+  nginx pid file: <span class="s2">"/var/run/nginx.pid"</span>
+  nginx error log file: <span class="s2">"/var/log/nginx/error.log"</span>
+  nginx http access log file: <span class="s2">"/var/log/nginx/access.log"</span>
+  nginx http client request body temporary files: <span class="s2">"/var/cache/nginx/client_temp"</span>
+  nginx http proxy temporary files: <span class="s2">"/var/cache/nginx/proxy_temp"</span>
+  nginx http fastcgi temporary files: <span class="s2">"/var/cache/nginx/fastcgi_temp"</span>
+  nginx http uwsgi temporary files: <span class="s2">"/var/cache/nginx/uwsgi_temp"</span>
+  nginx http scgi temporary files: <span class="s2">"/var/cache/nginx/scgi_temp"</span>
+</code></pre>  </div></div> <ul> <li>Compilamos el programa:</li> </ul> <div class="language-shell highlighter-rouge notranslate"><div class="highlight"><pre class="highlight"><code>joseju@joseju:~/nginx/nginx-1.15.8<span class="nv">$ </span>make
+make <span class="nt">-f</span> nginx-1.15.8/Makefile
+make[1]: se entra en el directorio <span class="s1">'/home/joseju/nginx/nginx-1.15.8'</span>
+<span class="nb">cd</span> ../dep/pcre-8.42 <span class="se">\</span>
+<span class="o">&amp;&amp;</span> <span class="k">if</span> <span class="o">[</span> <span class="nt">-f</span> Makefile <span class="o">]</span><span class="p">;</span> <span class="k">then </span>make distclean<span class="p">;</span> <span class="k">fi</span> <span class="se">\</span>
+<span class="o">&amp;&amp;</span> <span class="nv">CC</span><span class="o">=</span><span class="s2">"cc"</span> <span class="nv">CFLAGS</span><span class="o">=</span><span class="s2">"-O2 -fomit-frame-pointer -pipe "</span> <span class="se">\</span>
+./configure <span class="nt">--disable-shared</span>  <span class="nt">--enable-jit</span>
+checking <span class="k">for </span>a BSD-compatible install... /usr/bin/install <span class="nt">-c</span>
+checking whether build environment is sane... <span class="nb">yes
+</span>checking <span class="k">for </span>a thread-safe <span class="nb">mkdir</span> <span class="nt">-p</span>... /usr/bin/mkdir <span class="nt">-p</span>
+checking <span class="k">for </span>gawk... gawk
+checking whether make sets <span class="si">$(</span>MAKE<span class="si">)</span>... <span class="nb">yes
+</span>checking whether make supports nested variables... <span class="nb">yes
+</span>checking whether make supports nested variables... <span class="o">(</span>cached<span class="o">)</span> <span class="nb">yes
+</span>checking <span class="k">for </span>style of include used by make... GNU
+checking <span class="k">for </span>gcc... cc
+checking whether the C compiler works... <span class="nb">yes
+</span>checking <span class="k">for </span>C compiler default output file name... a.out
+checking <span class="k">for </span>suffix of executables... 
+checking whether we are cross compiling... no
+checking <span class="k">for </span>suffix of object files... o
+checking whether we are using the GNU C compiler... <span class="nb">yes
+</span>checking whether cc accepts <span class="nt">-g</span>... <span class="nb">yes
+</span>checking <span class="k">for </span>cc option to accept ISO C89... none needed
+checking whether cc understands <span class="nt">-c</span> and <span class="nt">-o</span> together... <span class="nb">yes
+</span>checking dependency style of cc... gcc3
+checking <span class="k">for </span>ar... ar
+
+joseju@joseju:~/nginx/nginx-1.15.8<span class="nv">$ </span><span class="nb">sudo </span>make <span class="nb">install
+</span>make <span class="nt">-f</span> nginx-1.15.8/Makefile <span class="nb">install
+</span>make[1]: se entra en el directorio <span class="s1">'/home/joseju/nginx/nginx-1.15.8'</span>
+<span class="nb">cd </span>nginx-1.15.8/src/http/modules/perl <span class="o">&amp;&amp;</span> make <span class="nb">install
+</span>make[2]: se entra en el directorio <span class="s1">'/home/joseju/nginx/nginx-1.15.8/nginx-1.15.8/src/http/modules/perl'</span>
+<span class="s2">"/usr/bin/perl"</span> <span class="nt">-MExtUtils</span>::Command::MM <span class="nt">-e</span> <span class="s1">'cp_nonempty'</span> <span class="nt">--</span> nginx.bs blib/arch/auto/nginx/nginx.bs 644
+Manifying 1 pod document
+Files found <span class="k">in </span>blib/arch: installing files <span class="k">in </span>blib/lib into architecture dependent library tree
+Installing /usr/share/perl/5.24.1/x86_64-linux-gnu-thread-multi/auto/nginx/nginx.so
+Installing /usr/share/perl/5.24.1/x86_64-linux-gnu-thread-multi/nginx.pm
+Installing /usr/share/perl/5.24.1/man3/nginx.3pm
+Appending installation info to /usr/share/perl/5.24.1/x86_64-linux-gnu-thread-multi/perllocal.pod
+make[2]: se sale del directorio <span class="s1">'/home/joseju/nginx/nginx-1.15.8/nginx-1.15.8/src/http/modules/perl'</span>
+<span class="nb">test</span> <span class="nt">-d</span> <span class="s1">'/etc/nginx'</span> <span class="o">||</span> <span class="nb">mkdir</span> <span class="nt">-p</span> <span class="s1">'/etc/nginx'</span>
+<span class="nb">test</span> <span class="nt">-d</span> <span class="s1">'/usr/sbin'</span> <span class="se">\</span>
+	<span class="o">||</span> <span class="nb">mkdir</span> <span class="nt">-p</span> <span class="s1">'/usr/sbin'</span>
+<span class="nb">test</span> <span class="o">!</span> <span class="nt">-f</span> <span class="s1">'/usr/sbin/nginx'</span> <span class="se">\</span>
+	<span class="o">||</span> <span class="nb">mv</span> <span class="s1">'/usr/sbin/nginx'</span> <span class="se">\</span>
+		<span class="s1">'/usr/sbin/nginx.old'</span>
+<span class="nb">cp </span>nginx-1.15.8/nginx <span class="s1">'/usr/sbin/nginx'</span>
+<span class="nb">test</span> <span class="nt">-d</span> <span class="s1">'/etc/nginx'</span> <span class="se">\</span>
+	<span class="o">||</span> <span class="nb">mkdir</span> <span class="nt">-p</span> <span class="s1">'/etc/nginx'</span>
+<span class="nb">cp </span>conf/koi-win <span class="s1">'/etc/nginx'</span>
+<span class="nb">cp </span>conf/koi-utf <span class="s1">'/etc/nginx'</span>
+<span class="nb">cp </span>conf/win-utf <span class="s1">'/etc/nginx'</span>
+<span class="nb">test</span> <span class="nt">-f</span> <span class="s1">'/etc/nginx/mime.types'</span> <span class="se">\</span>
+	<span class="o">||</span> <span class="nb">cp </span>conf/mime.types <span class="s1">'/etc/nginx'</span>
+<span class="nb">cp </span>conf/mime.types <span class="s1">'/etc/nginx/mime.types.default'</span>
+<span class="nb">test</span> <span class="nt">-f</span> <span class="s1">'/etc/nginx/fastcgi_params'</span> <span class="se">\</span>
+	<span class="o">||</span> <span class="nb">cp </span>conf/fastcgi_params <span class="s1">'/etc/nginx'</span>
+<span class="nb">cp </span>conf/fastcgi_params <span class="se">\</span>
+	<span class="s1">'/etc/nginx/fastcgi_params.default'</span>
+<span class="nb">test</span> <span class="nt">-f</span> <span class="s1">'/etc/nginx/fastcgi.conf'</span> <span class="se">\</span>
+	<span class="o">||</span> <span class="nb">cp </span>conf/fastcgi.conf <span class="s1">'/etc/nginx'</span>
+<span class="nb">cp </span>conf/fastcgi.conf <span class="s1">'/etc/nginx/fastcgi.conf.default'</span>
+<span class="nb">test</span> <span class="nt">-f</span> <span class="s1">'/etc/nginx/uwsgi_params'</span> <span class="se">\</span>
+	<span class="o">||</span> <span class="nb">cp </span>conf/uwsgi_params <span class="s1">'/etc/nginx'</span>
+<span class="nb">cp </span>conf/uwsgi_params <span class="se">\</span>
+	<span class="s1">'/etc/nginx/uwsgi_params.default'</span>
+<span class="nb">test</span> <span class="nt">-f</span> <span class="s1">'/etc/nginx/scgi_params'</span> <span class="se">\</span>
+	<span class="o">||</span> <span class="nb">cp </span>conf/scgi_params <span class="s1">'/etc/nginx'</span>
+<span class="nb">cp </span>conf/scgi_params <span class="se">\</span>
+	<span class="s1">'/etc/nginx/scgi_params.default'</span>
+<span class="nb">test</span> <span class="nt">-f</span> <span class="s1">'/etc/nginx/nginx.conf'</span> <span class="se">\</span>
+	<span class="o">||</span> <span class="nb">cp </span>conf/nginx.conf <span class="s1">'/etc/nginx/nginx.conf'</span>
+<span class="nb">cp </span>conf/nginx.conf <span class="s1">'/etc/nginx/nginx.conf.default'</span>
+<span class="nb">test</span> <span class="nt">-d</span> <span class="s1">'/var/run'</span> <span class="se">\</span>
+	<span class="o">||</span> <span class="nb">mkdir</span> <span class="nt">-p</span> <span class="s1">'/var/run'</span>
+<span class="nb">test</span> <span class="nt">-d</span> <span class="s1">'/var/log/nginx'</span> <span class="se">\</span>
+	<span class="o">||</span> <span class="nb">mkdir</span> <span class="nt">-p</span> <span class="s1">'/var/log/nginx'</span>
+<span class="nb">test</span> <span class="nt">-d</span> <span class="s1">'/etc/nginx/html'</span> <span class="se">\</span>
+	<span class="o">||</span> <span class="nb">cp</span> <span class="nt">-R</span> html <span class="s1">'/etc/nginx'</span>
+<span class="nb">test</span> <span class="nt">-d</span> <span class="s1">'/var/log/nginx'</span> <span class="se">\</span>
+	<span class="o">||</span> <span class="nb">mkdir</span> <span class="nt">-p</span> <span class="s1">'/var/log/nginx'</span>
+<span class="nb">test</span> <span class="nt">-d</span> <span class="s1">'/usr/lib/nginx/modules'</span> <span class="se">\</span>
+	<span class="o">||</span> <span class="nb">mkdir</span> <span class="nt">-p</span> <span class="s1">'/usr/lib/nginx/modules'</span>
+<span class="nb">test</span> <span class="o">!</span> <span class="nt">-f</span> <span class="s1">'/usr/lib/nginx/modules/ngx_http_xslt_filter_module.so'</span> <span class="se">\</span>
+	<span class="o">||</span> <span class="nb">mv</span> <span class="s1">'/usr/lib/nginx/modules/ngx_http_xslt_filter_module.so'</span> <span class="se">\</span>
+		<span class="s1">'/usr/lib/nginx/modules/ngx_http_xslt_filter_module.so.old'</span>
+<span class="nb">cp </span>nginx-1.15.8/ngx_http_xslt_filter_module.so <span class="s1">'/usr/lib/nginx/modules/ngx_http_xslt_filter_module.so'</span>
+<span class="nb">test</span> <span class="o">!</span> <span class="nt">-f</span> <span class="s1">'/usr/lib/nginx/modules/ngx_http_image_filter_module.so'</span> <span class="se">\</span>
+	<span class="o">||</span> <span class="nb">mv</span> <span class="s1">'/usr/lib/nginx/modules/ngx_http_image_filter_module.so'</span> <span class="se">\</span>
+		<span class="s1">'/usr/lib/nginx/modules/ngx_http_image_filter_module.so.old'</span>
+<span class="nb">cp </span>nginx-1.15.8/ngx_http_image_filter_module.so <span class="s1">'/usr/lib/nginx/modules/ngx_http_image_filter_module.so'</span>
+<span class="nb">test</span> <span class="o">!</span> <span class="nt">-f</span> <span class="s1">'/usr/lib/nginx/modules/ngx_http_geoip_module.so'</span> <span class="se">\</span>
+	<span class="o">||</span> <span class="nb">mv</span> <span class="s1">'/usr/lib/nginx/modules/ngx_http_geoip_module.so'</span> <span class="se">\</span>
+		<span class="s1">'/usr/lib/nginx/modules/ngx_http_geoip_module.so.old'</span>
+<span class="nb">cp </span>nginx-1.15.8/ngx_http_geoip_module.so <span class="s1">'/usr/lib/nginx/modules/ngx_http_geoip_module.so'</span>
+<span class="nb">test</span> <span class="o">!</span> <span class="nt">-f</span> <span class="s1">'/usr/lib/nginx/modules/ngx_http_perl_module.so'</span> <span class="se">\</span>
+	<span class="o">||</span> <span class="nb">mv</span> <span class="s1">'/usr/lib/nginx/modules/ngx_http_perl_module.so'</span> <span class="se">\</span>
+		<span class="s1">'/usr/lib/nginx/modules/ngx_http_perl_module.so.old'</span>
+<span class="nb">cp </span>nginx-1.15.8/ngx_http_perl_module.so <span class="s1">'/usr/lib/nginx/modules/ngx_http_perl_module.so'</span>
+<span class="nb">test</span> <span class="o">!</span> <span class="nt">-f</span> <span class="s1">'/usr/lib/nginx/modules/ngx_stream_geoip_module.so'</span> <span class="se">\</span>
+	<span class="o">||</span> <span class="nb">mv</span> <span class="s1">'/usr/lib/nginx/modules/ngx_stream_geoip_module.so'</span> <span class="se">\</span>
+		<span class="s1">'/usr/lib/nginx/modules/ngx_stream_geoip_module.so.old'</span>
+<span class="nb">cp </span>nginx-1.15.8/ngx_stream_geoip_module.so <span class="s1">'/usr/lib/nginx/modules/ngx_stream_geoip_module.so'</span>
+<span class="nb">test</span> <span class="o">!</span> <span class="nt">-f</span> <span class="s1">'/usr/lib/nginx/modules/ngx_mail_module.so'</span> <span class="se">\</span>
+	<span class="o">||</span> <span class="nb">mv</span> <span class="s1">'/usr/lib/nginx/modules/ngx_mail_module.so'</span> <span class="se">\</span>
+		<span class="s1">'/usr/lib/nginx/modules/ngx_mail_module.so.old'</span>
+<span class="nb">cp </span>nginx-1.15.8/ngx_mail_module.so <span class="s1">'/usr/lib/nginx/modules/ngx_mail_module.so'</span>
+<span class="nb">test</span> <span class="o">!</span> <span class="nt">-f</span> <span class="s1">'/usr/lib/nginx/modules/ngx_stream_module.so'</span> <span class="se">\</span>
+	<span class="o">||</span> <span class="nb">mv</span> <span class="s1">'/usr/lib/nginx/modules/ngx_stream_module.so'</span> <span class="se">\</span>
+		<span class="s1">'/usr/lib/nginx/modules/ngx_stream_module.so.old'</span>
+<span class="nb">cp </span>nginx-1.15.8/ngx_stream_module.so <span class="s1">'/usr/lib/nginx/modules/ngx_stream_module.so'</span>
+make[1]: se sale del directorio <span class="s1">'/home/joseju/nginx/nginx-1.15.8'</span>
+</code></pre>  </div></div> <ul> <li>Instalamos:</li> </ul> <div class="language-shell highlighter-rouge notranslate"><div class="highlight"><pre class="highlight"><code>joseju@joseju:~/nginx/nginx-1.15.8<span class="nv">$ </span><span class="nb">sudo </span>make <span class="nb">install
+</span>make <span class="nt">-f</span> nginx-1.15.8/Makefile <span class="nb">install
+</span>make[1]: se entra en el directorio <span class="s1">'/home/joseju/nginx/nginx-1.15.8'</span>
+<span class="nb">cd </span>nginx-1.15.8/src/http/modules/perl <span class="o">&amp;&amp;</span> make <span class="nb">install
+</span>make[2]: se entra en el directorio <span class="s1">'/home/joseju/nginx/nginx-1.15.8/nginx-1.15.8/src/http/modules/perl'</span>
+<span class="s2">"/usr/bin/perl"</span> <span class="nt">-MExtUtils</span>::Command::MM <span class="nt">-e</span> <span class="s1">'cp_nonempty'</span> <span class="nt">--</span> nginx.bs blib/arch/auto/nginx/nginx.bs 644
+Manifying 1 pod document
+Files found <span class="k">in </span>blib/arch: installing files <span class="k">in </span>blib/lib into architecture dependent library tree
+Installing /usr/share/perl/5.24.1/x86_64-linux-gnu-thread-multi/auto/nginx/nginx.so
+Installing /usr/share/perl/5.24.1/x86_64-linux-gnu-thread-multi/nginx.pm
+Installing /usr/share/perl/5.24.1/man3/nginx.3pm
+Appending installation info to /usr/share/perl/5.24.1/x86_64-linux-gnu-thread-multi/perllocal.pod
+make[2]: se sale del directorio <span class="s1">'/home/joseju/nginx/nginx-1.15.8/nginx-1.15.8/src/http/modules/perl'</span>
+<span class="nb">test</span> <span class="nt">-d</span> <span class="s1">'/etc/nginx'</span> <span class="o">||</span> <span class="nb">mkdir</span> <span class="nt">-p</span> <span class="s1">'/etc/nginx'</span>
+<span class="nb">test</span> <span class="nt">-d</span> <span class="s1">'/usr/sbin'</span> <span class="se">\</span>
+	<span class="o">||</span> <span class="nb">mkdir</span> <span class="nt">-p</span> <span class="s1">'/usr/sbin'</span>
+<span class="nb">test</span> <span class="o">!</span> <span class="nt">-f</span> <span class="s1">'/usr/sbin/nginx'</span> <span class="se">\</span>
+	<span class="o">||</span> <span class="nb">mv</span> <span class="s1">'/usr/sbin/nginx'</span> <span class="se">\</span>
+		<span class="s1">'/usr/sbin/nginx.old'</span>
+<span class="nb">cp </span>nginx-1.15.8/nginx <span class="s1">'/usr/sbin/nginx'</span>
+<span class="nb">test</span> <span class="nt">-d</span> <span class="s1">'/etc/nginx'</span> <span class="se">\</span>
+	<span class="o">||</span> <span class="nb">mkdir</span> <span class="nt">-p</span> <span class="s1">'/etc/nginx'</span>
+<span class="nb">cp </span>conf/koi-win <span class="s1">'/etc/nginx'</span>
+<span class="nb">cp </span>conf/koi-utf <span class="s1">'/etc/nginx'</span>
+<span class="nb">cp </span>conf/win-utf <span class="s1">'/etc/nginx'</span>
+<span class="nb">test</span> <span class="nt">-f</span> <span class="s1">'/etc/nginx/mime.types'</span> <span class="se">\</span>
+	<span class="o">||</span> <span class="nb">cp </span>conf/mime.types <span class="s1">'/etc/nginx'</span>
+<span class="nb">cp </span>conf/mime.types <span class="s1">'/etc/nginx/mime.types.default'</span>
+<span class="nb">test</span> <span class="nt">-f</span> <span class="s1">'/etc/nginx/fastcgi_params'</span> <span class="se">\</span>
+	<span class="o">||</span> <span class="nb">cp </span>conf/fastcgi_params <span class="s1">'/etc/nginx'</span>
+<span class="nb">cp </span>conf/fastcgi_params <span class="se">\</span>
+	<span class="s1">'/etc/nginx/fastcgi_params.default'</span>
+<span class="nb">test</span> <span class="nt">-f</span> <span class="s1">'/etc/nginx/fastcgi.conf'</span> <span class="se">\</span>
+	<span class="o">||</span> <span class="nb">cp </span>conf/fastcgi.conf <span class="s1">'/etc/nginx'</span>
+<span class="nb">cp </span>conf/fastcgi.conf <span class="s1">'/etc/nginx/fastcgi.conf.default'</span>
+<span class="nb">test</span> <span class="nt">-f</span> <span class="s1">'/etc/nginx/uwsgi_params'</span> <span class="se">\</span>
+	<span class="o">||</span> <span class="nb">cp </span>conf/uwsgi_params <span class="s1">'/etc/nginx'</span>
+<span class="nb">cp </span>conf/uwsgi_params <span class="se">\</span>
+	<span class="s1">'/etc/nginx/uwsgi_params.default'</span>
+<span class="nb">test</span> <span class="nt">-f</span> <span class="s1">'/etc/nginx/scgi_params'</span> <span class="se">\</span>
+	<span class="o">||</span> <span class="nb">cp </span>conf/scgi_params <span class="s1">'/etc/nginx'</span>
+<span class="nb">cp </span>conf/scgi_params <span class="se">\</span>
+	<span class="s1">'/etc/nginx/scgi_params.default'</span>
+<span class="nb">test</span> <span class="nt">-f</span> <span class="s1">'/etc/nginx/nginx.conf'</span> <span class="se">\</span>
+	<span class="o">||</span> <span class="nb">cp </span>conf/nginx.conf <span class="s1">'/etc/nginx/nginx.conf'</span>
+<span class="nb">cp </span>conf/nginx.conf <span class="s1">'/etc/nginx/nginx.conf.default'</span>
+<span class="nb">test</span> <span class="nt">-d</span> <span class="s1">'/var/run'</span> <span class="se">\</span>
+	<span class="o">||</span> <span class="nb">mkdir</span> <span class="nt">-p</span> <span class="s1">'/var/run'</span>
+<span class="nb">test</span> <span class="nt">-d</span> <span class="s1">'/var/log/nginx'</span> <span class="se">\</span>
+	<span class="o">||</span> <span class="nb">mkdir</span> <span class="nt">-p</span> <span class="s1">'/var/log/nginx'</span>
+<span class="nb">test</span> <span class="nt">-d</span> <span class="s1">'/etc/nginx/html'</span> <span class="se">\</span>
+	<span class="o">||</span> <span class="nb">cp</span> <span class="nt">-R</span> html <span class="s1">'/etc/nginx'</span>
+<span class="nb">test</span> <span class="nt">-d</span> <span class="s1">'/var/log/nginx'</span> <span class="se">\</span>
+	<span class="o">||</span> <span class="nb">mkdir</span> <span class="nt">-p</span> <span class="s1">'/var/log/nginx'</span>
+<span class="nb">test</span> <span class="nt">-d</span> <span class="s1">'/usr/lib/nginx/modules'</span> <span class="se">\</span>
+	<span class="o">||</span> <span class="nb">mkdir</span> <span class="nt">-p</span> <span class="s1">'/usr/lib/nginx/modules'</span>
+<span class="nb">test</span> <span class="o">!</span> <span class="nt">-f</span> <span class="s1">'/usr/lib/nginx/modules/ngx_http_xslt_filter_module.so'</span> <span class="se">\</span>
+	<span class="o">||</span> <span class="nb">mv</span> <span class="s1">'/usr/lib/nginx/modules/ngx_http_xslt_filter_module.so'</span> <span class="se">\</span>
+		<span class="s1">'/usr/lib/nginx/modules/ngx_http_xslt_filter_module.so.old'</span>
+<span class="nb">cp </span>nginx-1.15.8/ngx_http_xslt_filter_module.so <span class="s1">'/usr/lib/nginx/modules/ngx_http_xslt_filter_module.so'</span>
+<span class="nb">test</span> <span class="o">!</span> <span class="nt">-f</span> <span class="s1">'/usr/lib/nginx/modules/ngx_http_image_filter_module.so'</span> <span class="se">\</span>
+	<span class="o">||</span> <span class="nb">mv</span> <span class="s1">'/usr/lib/nginx/modules/ngx_http_image_filter_module.so'</span> <span class="se">\</span>
+		<span class="s1">'/usr/lib/nginx/modules/ngx_http_image_filter_module.so.old'</span>
+<span class="nb">cp </span>nginx-1.15.8/ngx_http_image_filter_module.so <span class="s1">'/usr/lib/nginx/modules/ngx_http_image_filter_module.so'</span>
+<span class="nb">test</span> <span class="o">!</span> <span class="nt">-f</span> <span class="s1">'/usr/lib/nginx/modules/ngx_http_geoip_module.so'</span> <span class="se">\</span>
+	<span class="o">||</span> <span class="nb">mv</span> <span class="s1">'/usr/lib/nginx/modules/ngx_http_geoip_module.so'</span> <span class="se">\</span>
+		<span class="s1">'/usr/lib/nginx/modules/ngx_http_geoip_module.so.old'</span>
+<span class="nb">cp </span>nginx-1.15.8/ngx_http_geoip_module.so <span class="s1">'/usr/lib/nginx/modules/ngx_http_geoip_module.so'</span>
+<span class="nb">test</span> <span class="o">!</span> <span class="nt">-f</span> <span class="s1">'/usr/lib/nginx/modules/ngx_http_perl_module.so'</span> <span class="se">\</span>
+	<span class="o">||</span> <span class="nb">mv</span> <span class="s1">'/usr/lib/nginx/modules/ngx_http_perl_module.so'</span> <span class="se">\</span>
+		<span class="s1">'/usr/lib/nginx/modules/ngx_http_perl_module.so.old'</span>
+<span class="nb">cp </span>nginx-1.15.8/ngx_http_perl_module.so <span class="s1">'/usr/lib/nginx/modules/ngx_http_perl_module.so'</span>
+<span class="nb">test</span> <span class="o">!</span> <span class="nt">-f</span> <span class="s1">'/usr/lib/nginx/modules/ngx_stream_geoip_module.so'</span> <span class="se">\</span>
+	<span class="o">||</span> <span class="nb">mv</span> <span class="s1">'/usr/lib/nginx/modules/ngx_stream_geoip_module.so'</span> <span class="se">\</span>
+		<span class="s1">'/usr/lib/nginx/modules/ngx_stream_geoip_module.so.old'</span>
+<span class="nb">cp </span>nginx-1.15.8/ngx_stream_geoip_module.so <span class="s1">'/usr/lib/nginx/modules/ngx_stream_geoip_module.so'</span>
+<span class="nb">test</span> <span class="o">!</span> <span class="nt">-f</span> <span class="s1">'/usr/lib/nginx/modules/ngx_mail_module.so'</span> <span class="se">\</span>
+	<span class="o">||</span> <span class="nb">mv</span> <span class="s1">'/usr/lib/nginx/modules/ngx_mail_module.so'</span> <span class="se">\</span>
+		<span class="s1">'/usr/lib/nginx/modules/ngx_mail_module.so.old'</span>
+<span class="nb">cp </span>nginx-1.15.8/ngx_mail_module.so <span class="s1">'/usr/lib/nginx/modules/ngx_mail_module.so'</span>
+<span class="nb">test</span> <span class="o">!</span> <span class="nt">-f</span> <span class="s1">'/usr/lib/nginx/modules/ngx_stream_module.so'</span> <span class="se">\</span>
+	<span class="o">||</span> <span class="nb">mv</span> <span class="s1">'/usr/lib/nginx/modules/ngx_stream_module.so'</span> <span class="se">\</span>
+		<span class="s1">'/usr/lib/nginx/modules/ngx_stream_module.so.old'</span>
+<span class="nb">cp </span>nginx-1.15.8/ngx_stream_module.so <span class="s1">'/usr/lib/nginx/modules/ngx_stream_module.so'</span>
+make[1]: se sale del directorio <span class="s1">'/home/joseju/nginx/nginx-1.15.8'</span>
+</code></pre>  </div></div> <ul> <li>Comprobamos la versión de nginx para ver si se ha instalado:</li> </ul> <div class="language-shell highlighter-rouge notranslate"><div class="highlight"><pre class="highlight"><code>joseju@joseju:~<span class="nv">$ </span><span class="nb">sudo </span>nginx <span class="nt">-V</span>
+nginx version: nginx/1.15.8 <span class="o">(</span>Debian<span class="o">)</span>
+built by gcc 10.2.1 20210110 <span class="o">(</span>Debian 10.2.1-6<span class="o">)</span> 
+built with OpenSSL 1.1.1a  20 Nov 2018
+TLS SNI support enabled
+configure arguments: <span class="nt">--prefix</span><span class="o">=</span>/etc/nginx <span class="nt">--sbin-path</span><span class="o">=</span>/usr/sbin/nginx <span class="nt">--modules-path</span><span class="o">=</span>/usr/lib/nginx/modules <span class="nt">--conf-path</span><span class="o">=</span>/etc/nginx/nginx.conf <span class="nt">--error-log-path</span><span class="o">=</span>/var/log/nginx/error.log <span class="nt">--pid-path</span><span class="o">=</span>/var/run/nginx.pid <span class="nt">--lock-path</span><span class="o">=</span>/var/run/nginx.lock <span class="nt">--user</span><span class="o">=</span>nginx <span class="nt">--group</span><span class="o">=</span>nginx <span class="nt">--build</span><span class="o">=</span>Debian <span class="nt">--builddir</span><span class="o">=</span>nginx-1.15.8 <span class="nt">--with-select_module</span> <span class="nt">--with-poll_module</span> <span class="nt">--with-threads</span> <span class="nt">--with-file-aio</span> <span class="nt">--with-http_ssl_module</span> <span class="nt">--with-http_v2_module</span> <span class="nt">--with-http_realip_module</span> <span class="nt">--with-http_addition_module</span> <span class="nt">--with-http_xslt_module</span><span class="o">=</span>dynamic <span class="nt">--with-http_image_filter_module</span><span class="o">=</span>dynamic <span class="nt">--with-http_geoip_module</span><span class="o">=</span>dynamic <span class="nt">--with-http_sub_module</span> <span class="nt">--with-http_dav_module</span> <span class="nt">--with-http_flv_module</span> <span class="nt">--with-http_mp4_module</span> <span class="nt">--with-http_gunzip_module</span> <span class="nt">--with-http_gzip_static_module</span> <span class="nt">--with-http_auth_request_module</span> <span class="nt">--with-http_random_index_module</span> <span class="nt">--with-http_secure_link_module</span> <span class="nt">--with-http_degradation_module</span> <span class="nt">--with-http_slice_module</span> <span class="nt">--with-http_stub_status_module</span> <span class="nt">--with-http_perl_module</span><span class="o">=</span>dynamic <span class="nt">--with-perl_modules_path</span><span class="o">=</span>/usr/share/perl/5.24.1 <span class="nt">--with-perl</span><span class="o">=</span>/usr/bin/perl <span class="nt">--http-log-path</span><span class="o">=</span>/var/log/nginx/access.log <span class="nt">--http-client-body-temp-path</span><span class="o">=</span>/var/cache/nginx/client_temp <span class="nt">--http-proxy-temp-path</span><span class="o">=</span>/var/cache/nginx/proxy_temp <span class="nt">--http-fastcgi-temp-path</span><span class="o">=</span>/var/cache/nginx/fastcgi_temp <span class="nt">--http-uwsgi-temp-path</span><span class="o">=</span>/var/cache/nginx/uwsgi_temp <span class="nt">--http-scgi-temp-path</span><span class="o">=</span>/var/cache/nginx/scgi_temp <span class="nt">--with-mail</span><span class="o">=</span>dynamic <span class="nt">--with-mail_ssl_module</span> <span class="nt">--with-stream</span><span class="o">=</span>dynamic <span class="nt">--with-stream_ssl_module</span> <span class="nt">--with-stream_realip_module</span> <span class="nt">--with-stream_geoip_module</span><span class="o">=</span>dynamic <span class="nt">--with-stream_ssl_preread_module</span> <span class="nt">--with-compat</span> <span class="nt">--with-pcre</span><span class="o">=</span>../dep/pcre-8.42 <span class="nt">--with-pcre-jit</span> <span class="nt">--with-zlib</span><span class="o">=</span>../dep/zlib-1.2.13 <span class="nt">--with-openssl</span><span class="o">=</span>../dep/openssl-1.1.1a <span class="nt">--with-openssl-opt</span><span class="o">=</span>no-nextprotoneg <span class="nt">--with-debug</span>
+</code></pre>  </div></div> <h3 id="desisntalación">Desisntalación</h3> <p>Para realizar la desistalación hacemos lo siguiente:</p> <ul> <li>Elimininamos el directorio donde está instalado y el manual:</li> </ul> <div class="language-shell highlighter-rouge notranslate"><div class="highlight"><pre class="highlight"><code>joseju@joseju:~/nginx<span class="nv">$ </span><span class="nb">ls
+</span>dep  nginx-1.15.8
+joseju@joseju:~/nginx<span class="nv">$ </span><span class="nb">rm</span> <span class="nt">-fr</span> <span class="k">*</span>
+joseju@joseju:~/nginx<span class="nv">$ </span><span class="nb">ls
+</span>joseju@joseju:~/nginx<span class="nv">$ </span><span class="nb">sudo rm</span> /usr/share/man/man8/nginx.8.gz
+</code></pre>  </div></div> <ul> <li>Comprobamos la versión del paquete para ver si está eliminado:</li> </ul> <div class="language-shell highlighter-rouge notranslate"><div class="highlight"><pre class="highlight"><code>joseju@joseju:~<span class="nv">$ </span><span class="nb">sudo </span>nginx <span class="nt">-V</span>
+<span class="nb">sudo</span>: nginx: <span class="nb">command </span>not found
+</code></pre>  </div></div> </div> </div> <div class="navigation-bottom d-flex flex-justify-between py-3" role="navigation" aria-label="footer navigation"> <div class="prev"><a href="/sistemas/compilacion-kernel.html" class="btn" title="COMPILACION DE UN KERNEL LINUX A MEDIDA" accesskey="p" rel="prev"> <i class="fa fa-arrow-circle-left"></i> Previous </a></div> <div class="next"></div> </div><hr> <div class="copyright text-center text-gray" role="contentinfo"> <i class="fa fa-copyright"></i> <span class="time">2022,</span> <a class="text-gray" href="https://github.com/joseju10" rel="noreferrer" target="_blank">joseju10</a> Revision <a class="text-gray" href="https://github.com/joseju10/compilacion_kernel/commit/347724b12926bb6cf078d70f8097c1bcc443bac5" title="347724b12926bb6cf078d70f8097c1bcc443bac5" rel="noreferrer" target="_blank">347724b</a> <br> <div class="generator"> Built with <a href="https://pages.github.com" rel="noreferrer" target="_blank" title="github-pages v209">GitHub Pages</a> using a <a href="https://github.com/rundocs/jekyll-rtd-theme" rel="noreferrer" target="_blank" title="jekyll-rtd-theme v2.0.10">theme</a> provided by <a href="https://rundocs.io" rel="noreferrer" target="_blank">RunDocs</a>. </div> </div> </div> </div> <div class="addons-wrap d-flex flex-column overflow-y-auto"> <div class="status d-flex flex-justify-between p-2"> <div class="title p-1"> <i class="fa fa-book"></i> pagina-joseju </div> <div class="branch p-1"> <span class="name"> gh-pages </span> <i class="fa fa-caret-down"></i> </div> </div> <div class="addons d-flex flex-column height-full p-2 d-none"> <dl> <dt>GitHub</dt> <dd> <a href="https://github.com/joseju10/compilacion_kernel" title="Stars: 0"> <i class="fa fa-github"></i> Homepage </a> </dd> <dd> <a href="https://github.com/joseju10/compilacion_kernel/issues" title="Open issues: 0"> <i class="fa fa-question-circle-o"></i> Issues </a> </dd> <dd> <a href="https://github.com/joseju10/compilacion_kernel/zipball/gh-pages" title="Size: 3181 Kb"> <i class="fa fa-download"></i> Download </a> </dd> </dl> <hr> <div class="license f6 pb-2"> This <a href="/" title="pagina-joseju">Software</a> is under the terms of <a href="https://github.com/joseju10/compilacion_kernel">MIT License</a>. </div> </div> </div> <script src="https://cdn.jsdelivr.net/gh/rundocs/jekyll-rtd-theme@2.0.10/assets/js/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/gh/rundocs/jekyll-rtd-theme@2.0.10/assets/js/theme.min.js"></script> </body> </html>

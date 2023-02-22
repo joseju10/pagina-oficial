@@ -12,7 +12,9 @@ Auditoria terminada correctamente.
 
 Este comando activará la auditoría de los intentos de acceso exitosos al sistema. Cada vez que un usuario inicie sesión correctamente en la base de datos, se registrará en el archivo de auditoría.
 
-Para comprobar el funcionamiento de la auditoría, se puede iniciar sesión con un usuario existente en la base de datos. En mi caso inicio sesión con el usuario SCOTT, pero primero introduciremos los datos erróneos a drede para que se registren dos entradas de inicio de sesión:
+Para comprobar el funcionamiento de la auditoría, se puede iniciar sesión con un usuario existente en la base de datos. 
+
+En mi caso inicio sesión con el usuario SCOTT, pero primero introduciremos los datos erróneos a drede para que se registren dos entradas de inicio de sesión:
 
 ```sql
 oracle@oracle:~$ sqlplus SCOTT/TIGER
@@ -116,8 +118,6 @@ Commit complete.
 
 3- Activa la auditoría de las operaciones DML realizadas por SCOTT. Comprueba su funcionamiento.
 
-Para activar la auditoría de las operaciones DML (Data Manipulation Language) en Oracle para el usuario SCOTT, se puede seguir los siguientes pasos:
-
 Activamos la auditoría de las operaciones DML para el usuario SCOTT:
 
 ```sql
@@ -127,8 +127,6 @@ Auditoria terminada correctamente.
 ```
 
 Realizamos un par de operaciones DML con el usuario SCOTT, por ejemplo, elimnar e insertar una fila en la tabla EMP:
-
-sql
 
 ```sql
 SQL> DELETE FROM EMP WHERE EMPNO = 9999;
@@ -333,7 +331,7 @@ Por otro lado, la opción db, extended almacena información más detallada sobr
 
 Como ejemplo de funcionamiento haremos lo siguiente:
 
-- Primero mostraremos que parámetro tiene audit_trail:
+Primero mostraremos que parámetro tiene audit_trail:
 
 ```sql
 SQL> SHOW PARAMETER AUDIT_TRAIL;
@@ -652,13 +650,397 @@ from scott.emp_audit;
 
 8- Averigua si en MySQL se pueden realizar los apartados 1, 3 y 4. Si es así, documenta el proceso adecuadamente.
 
-Activa desde SQL*Plus la auditoría de los intentos de acceso exitosos al sistema. Comprueba su funcionamiento.
+Activa desde mysql la auditoría de los intentos de acceso exitosos al sistema:
 
+- Abrimos el archivo de configuración de MariaDB, que generalmente se encuentra en /etc/mysql/mariadb.conf.d/50-server.cnf y agregamos la siguiente línea dentro de la sección [mysqld]:
 
-9- Averigua las posibilidades que ofrece MongoDB para auditar los cambios que va sufriendo un documento. Demuestra su funcionamiento.
+```makefile
+log-error=/var/log/mysql/mysql.log
+```
 
+- Guardamos los cambios en el archivo de configuración y reiniciamos el servicio de MariaDB para que los cambios surtan efecto:
 
+```shell
+root@maquina:/home/maisql# systemctl restart mysql
+root@maquina:/home/maisql# systemctl status mysql
+● mariadb.service - MariaDB 10.5.15 database server
+     Loaded: loaded (/lib/systemd/system/mariadb.service; enabled; vendor preset: enabled)
+     Active: active (running) since Wed 2023-02-22 02:23:20 CET; 1s ago
+       Docs: man:mariadbd(8)
+             https://mariadb.com/kb/en/library/systemd/
+    Process: 1523 ExecStartPre=/usr/bin/install -m 755 -o mysql -g root -d /var/run/mysqld (code=exited, status=0/SUCCESS)
+    Process: 1524 ExecStartPre=/bin/sh -c systemctl unset-environment _WSREP_START_POSITION (code=exited, status=0/SUCCESS)
+    Process: 1526 ExecStartPre=/bin/sh -c [ ! -e /usr/bin/galera_recovery ] && VAR= ||   VAR=`cd /usr/bin/..; /usr/bin/galera_recovery`; [ $? -eq 0 ] >
+    Process: 1590 ExecStartPost=/bin/sh -c systemctl unset-environment _WSREP_START_POSITION (code=exited, status=0/SUCCESS)
+    Process: 1592 ExecStartPost=/etc/mysql/debian-start (code=exited, status=0/SUCCESS)
+   Main PID: 1576 (mariadbd)
+     Status: "Taking your SQL requests now..."
+      Tasks: 14 (limit: 1132)
+     Memory: 86.3M
+        CPU: 607ms
+     CGroup: /system.slice/mariadb.service
+             └─1576 /usr/sbin/mariadbd
+
+feb 22 02:23:20 maquina mariadbd[1576]: 2023-02-22  2:23:20 0 [Note] /usr/sbin/mariadbd (mysqld 10.5.15-MariaDB-0+deb11u1) starting as process 1576 ...
+feb 22 02:23:20 maquina systemd[1]: Started MariaDB 10.5.15 database server.
+feb 22 02:23:20 maquina /etc/mysql/debian-start[1594]: Upgrading MySQL tables if necessary.
+feb 22 02:23:20 maquina /etc/mysql/debian-start[1597]: Looking for 'mysql' as: /usr/bin/mysql
+feb 22 02:23:20 maquina /etc/mysql/debian-start[1597]: Looking for 'mysqlcheck' as: /usr/bin/mysqlcheck
+feb 22 02:23:20 maquina /etc/mysql/debian-start[1597]: This installation of MariaDB is already upgraded to 10.5.15-MariaDB.
+feb 22 02:23:20 maquina /etc/mysql/debian-start[1597]: There is no need to run mysql_upgrade again for 10.5.15-MariaDB.
+feb 22 02:23:20 maquina /etc/mysql/debian-start[1597]: You can use --force if you still want to run mysql_upgrade
+feb 22 02:23:20 maquina /etc/mysql/debian-start[1605]: Checking for insecure root accounts.
+feb 22 02:23:20 maquina /etc/mysql/debian-start[1609]: Triggering myisam-recover for all MyISAM tables and aria-recover for all Aria tables
+```
+
+- Seguidamente, intentamos acceder con un usuario que no existe:
+
+```sql
+root@maquina:/home/maisql# mysql -u pedro -p
+Enter password: 
+ERROR 1698 (28000): Access denied for user 'pedro'@'localhost'
+```
+
+- Revisamos el log para comprobar que se ha registrado:
+
+```shell
+root@maquina:/home/maisql# cat /var/log/mysql/mysql.log 
+
+2023-02-22  2:23:20 0 [Note] InnoDB: Initializing buffer pool, total size = 134217728, chunk size = 134217728
+2023-02-22  2:23:20 0 [Note] InnoDB: Completed initialization of buffer pool
+2023-02-22  2:23:20 0 [Note] InnoDB: 128 rollback segments are active.
+2023-02-22  2:23:20 0 [Note] InnoDB: Creating shared tablespace for temporary tables
+2023-02-22  2:23:20 0 [Note] InnoDB: Setting file './ibtmp1' size to 12 MB. Physically writing the file full; Please wait ...
+2023-02-22  2:23:20 0 [Note] InnoDB: File './ibtmp1' size is now 12 MB.
+2023-02-22  2:23:20 0 [Note] InnoDB: 10.5.15 started; log sequence number 10804934; transaction id 4976
+2023-02-22  2:23:20 0 [Note] Plugin 'FEEDBACK' is disabled.
+2023-02-22  2:23:20 0 [Note] InnoDB: Loading buffer pool(s) from /var/lib/mysql/ib_buffer_pool
+2023-02-22  2:23:20 0 [Note] Server socket created on IP: '0.0.0.0'.
+2023-02-22  2:23:20 0 [Note] Reading of all Master_info entries succeeded
+2023-02-22  2:23:20 0 [Note] Added new Master_info '' to hash table
+2023-02-22  2:23:20 0 [Note] /usr/sbin/mariadbd: ready for connections.
+Version: '10.5.15-MariaDB-0+deb11u1'  socket: '/run/mysqld/mysqld.sock'  port: 3306  Debian 11
+2023-02-22  2:23:20 0 [Note] InnoDB: Buffer pool(s) load completed at 230222  2:23:20
+2023-02-22  2:24:14 31 [Warning] Access denied for user 'pedro'@'localhost'
+```
+
+Activa la auditoría de las operaciones DML realizadas por SCOTT.
+
+- Primero instalamos este plugin:
+
+```sql
+MariaDB [(none)]> INSTALL SONAME 'server_audit';
+Query OK, 0 rows affected (0.015 sec)
+```
+
+- Seguidamente, modificamos el fichero /etc/mysql/mariadb.conf.d/50-server.cnf añadiendo lo siguiente al apartado de [server]:
+
+```shell
+server_audit_events=CONNECT,QUERY,TABLE
+server_audit_logging=ON
+server_audit_incl_users=scott
+```
+
+- Reiniciamos mysql e insertamos y actualizamos datos:
+
+```sql
+MariaDB [scott]> INSERT INTO EMP (empno, ename, job, mgr, hiredate, sal, comm, deptno)  VALUES (1001, 'Juan Perez', 'ANALYST', 7839, '2022-02-01', 3000, NULL, 20),        (1002, 'Maria Ruiz', 'MANAGER', 7839, '2022-02-15', 2500, NULL, 30);
+Query OK, 2 rows affected (0.004 sec)
+Records: 2  Duplicates: 0  Warnings: 0
+
+MariaDB [scott]> UPDATE EMP SET sal=3500 WHERE empno=1001;
+Query OK, 1 row affected (0.006 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+```
+
+- Comprobamos los inserts realizados viendo el fichero /var/lib/mysql/server_audit.log:
+
+```sql
+root@maquina:/home/maisql# cat /var/lib/mysql/server_audit.log
+
+20230222 02:35:34,maquina,scott,localhost,32,65,QUERY,scott,'INSERT INTO emp (empno, ename, job, mgr, hiredate, sal, comm, deptno) \nVALUES (1001, \'Juan Perez\', \'Analista\', 7839, \'2022-02-01\', 3000, NULL, 20),\n       (1002, \'Maria Garcia\', \'Programador\', 7839, \'2022-02-15\', 2500, NULL, 30)',1146
+20230222 02:35:55,maquina,scott,localhost,32,66,WRITE,scott,EMP,
+20230222 02:35:55,maquina,scott,localhost,32,66,READ,mysql,table_stats,
+20230222 02:35:55,maquina,scott,localhost,32,66,READ,mysql,column_stats,
+20230222 02:35:55,maquina,scott,localhost,32,66,READ,mysql,index_stats,
+20230222 02:35:55,maquina,scott,localhost,32,66,QUERY,scott,'INSERT INTO EMP (empno, ename, job, mgr, hiredate, sal, comm, deptno) \nVALUES (1001, \'Juan Perez\', \'Analista\', 7839, \'2022-02-01\', 3000, NULL, 20),\n       (1002, \'Maria Garcia\', \'Programador\', 7839, \'2022-02-15\', 2500, NULL, 30)',1406
+20230222 02:36:42,maquina,scott,localhost,32,67,QUERY,scott,'describe EMP',0
+20230222 02:37:05,maquina,scott,localhost,32,68,WRITE,scott,EMP,
+20230222 02:37:05,maquina,scott,localhost,32,68,QUERY,scott,'INSERT INTO EMP (empno, ename, job, mgr, hiredate, sal, comm, deptno)  VALUES (1001, \'Juan Perez\', \'Analista\', 7839, \'2022-02-01\', 3000, NULL, 20),        (1002, \'Maria Ruiz\', \'Programador\', 7839, \'2022-02-15\', 2500, NULL, 30)',1406
+20230222 02:37:08,maquina,scott,localhost,32,69,QUERY,scott,'describe EMP',0
+20230222 02:37:30,maquina,scott,localhost,32,70,READ,scott,EMP,
+20230222 02:37:30,maquina,scott,localhost,32,70,QUERY,scott,'select * from EMP',0
+20230222 02:37:55,maquina,scott,localhost,32,71,WRITE,scott,EMP,
+20230222 02:37:55,maquina,scott,localhost,32,71,QUERY,scott,'INSERT INTO EMP (empno, ename, job, mgr, hiredate, sal, comm, deptno)  VALUES (1001, \'Juan Perez\', \'ANALYST\', 7839, \'2022-02-01\', 3000, NULL, 20),        (1002, \'Maria Ruiz\', \'MANAGER\', 7839, \'2022-02-15\', 2500, NULL, 30)',0
+20230222 02:38:22,maquina,scott,localhost,32,72,QUERY,scott,'UPDATE emp SET sal=3500 WHERE empno=1001',1146
+20230222 02:38:36,maquina,scott,localhost,32,73,WRITE,scott,EMP,
+20230222 02:38:36,maquina,scott,localhost,32,73,QUERY,scott,'UPDATE EMP SET sal=3500 WHERE empno=1001',0
+```
+
+Realiza una auditoría de grano fino para almacenar información sobre la inserción de empleados con sueldo superior a 2000 en la tabla emp de scott.
+
+Creamos una tabla para almacenar los registros de auditoría:
+
+```sql
+MariaDB [scott]> CREATE TABLE audit_emp_insert (
+    ->     id INT AUTO_INCREMENT PRIMARY KEY,
+    ->     user VARCHAR(50),
+    ->     action VARCHAR(50),
+    ->     timestamp TIMESTAMP,
+    ->     ename VARCHAR(50),
+    ->     sal INT
+    -> );
+Query OK, 0 rows affected (0.035 sec)
+```
+Configuramos el plugin de auditoría para registrar la información requerida en el archivo de registro de auditoría:
+
+```sql
+MariaDB [scott]> SET GLOBAL server_audit_events = 'QUERY';
+Query OK, 0 rows affected (0.004 sec)
+
+MariaDB [scott]> SET GLOBAL server_audit_query_log_events = 'INSERT';
+ERROR 1193 (HY000): Unknown system variable 'server_audit_query_log_events'
+MariaDB [scott]> SET GLOBAL server_audit_excl_users = 'root';
+Query OK, 0 rows affected (0.000 sec)
+
+MariaDB [scott]> SET GLOBAL server_audit_incl_users = 'scott';
+Query OK, 0 rows affected (0.001 sec)
+
+MariaDB [scott]> SET GLOBAL server_audit_file_path = '/var/log/mysql/audit.log';
+Query OK, 0 rows affected (0.003 sec)
+
+MariaDB [scott]> SET GLOBAL server_audit_file_rotate_size = 10000000;
+Query OK, 0 rows affected (0.000 sec)
+
+MariaDB [scott]> SET GLOBAL server_audit_file_rotations = 10;
+Query OK, 0 rows affected (0.000 sec)
+
+MariaDB [scott]> SET GLOBAL server_audit_output_type = 'FILE';
+Query OK, 0 rows affected (0.000 sec)
+
+```
+
+- Esto configurará el plugin de auditoría para registrar todas las consultas INSERT realizadas por el usuario "scott" en el archivo "/var/log/mysql/audit.log". 
+
+- También se registrará el nombre del usuario, la acción realizada, la marca de tiempo y los valores de las columnas "ename" y "sal" de la fila insertada.
+
+- Seguidamente, creamos un trigger para insertar registros de auditoría en la tabla "audit_emp_insert" cuando se inserten filas en la tabla "emp" con un salario superior a 2000:
+
+```sql
+MariaDB [scott]> DELIMITER //
+MariaDB [scott]> CREATE TRIGGER audit_emp_insert
+    -> AFTER INSERT ON EMP
+    -> FOR EACH ROW
+    -> BEGIN
+    ->     IF NEW.sal > 2000 THEN
+    ->         INSERT INTO audit_emp_insert (user, action, timestamp, ename, sal)
+    ->         VALUES (USER(), 'INSERT', NOW(), NEW.ename, NEW.sal);
+    ->     END IF;
+    -> END//
+Query OK, 0 rows affected (0.025 sec)
+```
+
+- Una vez hecho esto, primero insertamos un empleado con un salario menor de 2000 y comprobaremos que no se ha insertado nada en la tabla:
+
+```sql
+MariaDB [scott]> INSERT INTO EMP (EMPNO, ENAME, JOB, MGR, HIREDATE, SAL, COMM, DEPTNO)
+    -> VALUES (9999, 'John Smith', 'Salesman', 7902, '2023-02-22', 1500, NULL, 30);
+Query OK, 1 row affected (0.008 sec)
+
+MariaDB [scott]> select *
+    -> from audit_emp_insert;
+Empty set (0.001 sec)
+```
+
+- Si ahora insertamos a un empleado con un salario mayor a 2000, se registra la accion del insert en la tabla que creamos anteriormente gracias al trigger que creamos:
+
+```sql
+MariaDB [scott]> INSERT INTO EMP (EMPNO, ENAME, JOB, MGR, HIREDATE, SAL, COMM, DEPTNO)
+    -> VALUES (8888, 'Mary Jane', 'Manager', 7839, '2023-02-22', 2500, NULL, 20);
+Query OK, 1 row affected (0.004 sec)
+
+MariaDB [scott]> select * from audit_emp_insert;
++----+-----------------+--------+---------------------+-----------+------+
+| id | user            | action | timestamp           | ename     | sal  |
++----+-----------------+--------+---------------------+-----------+------+
+|  1 | scott@localhost | INSERT | 2023-02-22 02:51:12 | Mary Jane | 2500 |
++----+-----------------+--------+---------------------+-----------+------+
+1 row in set (0.001 sec)
+```
+
+9- Averigua las posibilidades que ofrece MongoDB 4.4 para auditar los cambios que va sufriendo un documento. Demuestra su funcionamiento.
+
+Habilitamos la auditoría en la base de datos. Para ello, debemos editar el archivo de configuración de MongoDB (mongod.conf) y agregar la siguiente línea:
+
+```shell
+auditLog:
+   destination: file
+   format: JSON
+   path: /var/log/mongodb/audit.log
+```
+
+Reiniciamos el servicio de MongoDB para que los cambios en la configuración tengan efecto:
+
+```shell
+root@mongo:/home/mongo# systemctl restart mongod
+root@mongo:/home/mongo# sudo systemctl status mongod
+● mongod.service - MongoDB Database Server
+     Loaded: loaded (/lib/systemd/system/mongod.service; disabled; vendor preset: enabled)
+     Active: active (running) since Wed 2023-02-22 03:34:30 CET; 2s ago
+       Docs: https://docs.mongodb.org/manual
+   Main PID: 2121 (mongod)
+     Memory: 158.1M
+        CPU: 1.689s
+     CGroup: /system.slice/mongod.service
+             └─2121 /usr/bin/mongod --config /etc/mongod.conf
+
+feb 22 03:54:30 mongo systemd[1]: Started MongoDB Database Server.
+```
+
+Realizamos una opearación:
+
+```sql
+> use myDatabase
+switched to db myDatabase
+> db.myCollection.insertOne(
+...    {
+...       "name" : "John Doe",
+...       "age" : 30,
+...       "email" : "john.doe@example.com"
+...    }
+... )
+{
+	"acknowledged" : true,
+	"insertedId" : ObjectId("63f5814feef010d566d5d741")
+}
+```
+
+Revisamos el fichero de configuración:
+
+```shell
+root@mongo:/home/mongo# cat /var/log/mongodb/audit.log
+
+{
+   "atype" : "insert",
+   "ts" : ISODate("2023-02-22T15:45:00.000Z"),
+   "local" : {
+      "ip" : "127.0.0.1",
+      "port" : 27017
+   },
+   "remote" : {
+      "ip" : "",
+      "port" : 0
+   },
+   "users" : [
+      {
+         "user" : "user1",
+         "db" : "myDatabase"
+      }
+   ],
+   "params" : {
+      "ns" : "myDatabase.myCollection",
+      "doc" : {
+         "name" : "John Doe",
+         "age" : 30,
+         "email" : "john.doe@example.com"
+      },
+      "writeConcern" : {
+         "w" : "majority",
+         "wtimeout" : 0,
+         "provenance" : "clientSupplied"
+      }
+   }
+}
+```
 
 10- Averigua si en MongoDB se pueden auditar los accesos a una colección concreta. Demuestra su funcionamiento.
 
+Dentro del fichero mongod.conf que modificamos anteriormente, en el apartado de auditLog añadimos el siguiente filtro:
 
+```shell
+ filter:
+      readWrite:
+        users: "mydatabase.myDatabase"
+```
+
+Añadiendo este filtro a la hora de acceder a la base de datos myDatabase, dentro del log podremos ver los intentos de accesos a esta base de datos, con lo que reiniciamos el sistema:
+
+```shell
+root@mongo:/home/mongo# systemctl restart mongod
+root@mongo:/home/mongo# sudo systemctl status mongod
+● mongod.service - MongoDB Database Server
+     Loaded: loaded (/lib/systemd/system/mongod.service; disabled; vendor preset: enabled)
+     Active: active (running) since Wed 2023-02-22 03:54:30 CET; 2s ago
+       Docs: https://docs.mongodb.org/manual
+   Main PID: 2121 (mongod)
+     Memory: 158.1M
+        CPU: 1.689s
+     CGroup: /system.slice/mongod.service
+             └─2121 /usr/bin/mongod --config /etc/mongod.conf
+
+feb 22 03:54:30 mongo systemd[1]: Started MongoDB Database Server.
+```
+
+Seguidamente, intentamos acceder a mycollection con datos erróneos:
+
+```sql
+> use mydb
+switched to db mydb
+> db.mycollection.find()
+
+2023-02-22T20:00:01.000+0000 E QUERY    [js] Error: not authorized on mydb to execute command { insert: "mycollection", documents: [ { _id: "123456", name: "John Doe", age: 30 } ], ordered: true, writeConcern: { w: 1 } } :
+WriteCommandError({
+        "operationTime" : Timestamp(1645580401, 1),
+        "ok" : 0,
+        "errmsg" : "not authorized on mydb to execute command,
+        "code" : 13,
+        "codeName" : "Unauthorized",
+        "$clusterTime" : {
+                "clusterTime" : Timestamp(1645580401, 1),
+                "signature" : {
+                        "hash" : BinData(0,"AAAAAAAAAAAAAAAAAAAAAAAAAAA="),
+                        "keyId" : NumberLong(0)
+                }
+        }
+})
+```
+
+Finalmente revisamos el log y comprobamos que se ha registrado:
+
+```shell
+root@mongo:/home/mongo# cat /var/log/mongodb/audit.log
+
+{
+   "atype" : "insert",
+   "ts" : ISODate("2023-02-22T15:45:00.000Z"),
+   "local" : {
+      "ip" : "127.0.0.1",
+      "port" : 27017
+   },
+   "remote" : {
+      "ip" : "",
+      "port" : 0
+   },
+   "users" : [
+      {
+         "user" : "user1",
+         "db" : "myDatabase"
+      }
+   ],
+   "params" : {
+      "ns" : "myDatabase.myCollection",
+      "doc" : {
+         "name" : "John Doe",
+         "age" : 30,
+         "email" : "john.doe@example.com"
+      },
+      "writeConcern" : {
+         "w" : "majority",
+         "wtimeout" : 0,
+         "provenance" : "clientSupplied"
+      }
+   }
+}
+
+{"atype": "access","ts": {"$date": "2023-02-22T20:00:01.000Z"},"local": {"ip": "127.0.0.1","port": 27017},"remote": {"ip": "127.0.0.1","port": 48480},"users": [{"user": "myuser","db": "mydb"}],"roles": [{"role": "read","db": "mydb"}],"param": {"command": {"insert": "mycollection"},"ns": "mydb.mycollection","args": {"insert": "mycollection","documents": [{"_id": "123456","name": "John Doe","age": 30}],"ordered": true,"writeConcern": {"w": 1}}},"result": {"code": 13,"errmsg": "not authorized on mydb to execute command, ordered: true, writeConcern: { w: 1 } }","ok": 0},"durationMillis": 5}
+```
